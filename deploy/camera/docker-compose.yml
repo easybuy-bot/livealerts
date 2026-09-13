@@ -1,0 +1,44 @@
+# Live Camera Studio — companion media stack
+# ------------------------------------------
+# This runs the parts that CANNOT live in shared PHP hosting: the RTMP/SRT
+# ingest + WebRTC/HLS media server, and the GPU/CPU video-processing worker
+# (AI face blur + privacy zones). The PHP app (OverlayHub) talks to this stack
+# only over the signed webhook (camera-webhook.php) and the REST API.
+#
+# Copy .env.example -> .env and fill in the values, then:  docker compose up -d
+version: "3.8"
+
+services:
+  mediamtx:
+    image: bluenviron/mediamtx:latest
+    restart: unless-stopped
+    network_mode: host          # needed for RTMP(1935)/SRT(8890/udp)/WebRTC ranges
+    environment:
+      - MTX_WEBHOOK_URL=${APP_WEBHOOK_URL}         # https://yourdomain.com/camera-webhook.php
+      - MTX_WEBHOOK_SECRET=${MEDIA_WEBHOOK_SECRET}
+    volumes:
+      - ./mediamtx.yml:/mediamtx.yml:ro
+      - ./hooks:/hooks:ro
+      - recordings:/recordings
+
+  worker:
+    build: ./worker
+    restart: unless-stopped
+    depends_on: [mediamtx]
+    environment:
+      - MEDIA_RTMP_BASE=rtmp://127.0.0.1:1935/live
+      - MEDIA_RTMP_PROCESSED=rtmp://127.0.0.1:1935/processed
+      - APP_API_BASE=${APP_API_BASE}               # https://yourdomain.com/camera-api.php
+      - WORKER_API_KEY=${WORKER_API_KEY}           # an ovhk_ key with camera:read + analytics
+      - FACE_BLUR_MODEL=/models/face.onnx
+    # For NVIDIA GPU acceleration, uncomment (requires nvidia-container-toolkit):
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices: [{ capabilities: ["gpu"] }]
+    volumes:
+      - ./worker/models:/models:ro
+      - recordings:/recordings
+
+volumes:
+  recordings:

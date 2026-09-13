@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>LiveAlerts — YouTube Live Alerts & Animated Overlays</title>
+<link rel="stylesheet" href="/css/app.css" />
+</head>
+<body>
+  <div class="hero">
+    <h1>Turn every YouTube live event into a <span class="grad">show-stopping alert</span></h1>
+    <p>Connect your channel, pick a professionally designed template, customize it visually, and drop it into OBS as a Browser Source. Subscribers, Super Chats, members, gifts and milestones — animated in real time.</p>
+    <div class="row" style="justify-content:center; gap:12px;">
+      <a class="btn" href="/register.html" style="padding:13px 26px; font-size:15px;">Get started free</a>
+      <a class="btn ghost" href="/login.html" style="padding:13px 26px; font-size:15px;">Log in</a>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="features">
+      <div class="feature"><div class="ico">🔴</div><h3>Auto live detection</h3><p>Your current livestream is detected automatically — no manual Video ID for every stream.</p></div>
+      <div class="feature"><div class="ico">🎨</div><h3>Animated template library</h3><p>50+ structured templates across every event type, fully customizable in the visual Alert Builder.</p></div>
+      <div class="feature"><div class="ico">⚡</div><h3>Real-time WebSocket</h3><p>Events route to your OBS overlay over WebSockets — never broadcast to anyone else.</p></div>
+      <div class="feature"><div class="ico">💰</div><h3>Super Chat & Stickers</h3><p>Amount-based templates with configurable tiers — small, medium, high and epic.</p></div>
+      <div class="feature"><div class="ico">👑</div><h3>Members & gifts</h3><p>New members, milestones and gift memberships with dedicated templates.</p></div>
+      <div class="feature"><div class="ico">🔒</div><h3>Multi-user isolation</h3><p>Every token, template, media file and event is scoped to its owner.</p></div>
+    </div>
+  </div>
+
+  <script src="/js/app.js"></script>
+  <script>
+    App.currentUser().then((u) => { if (u) window.location.href = '/dashboard.html'; });
+  </script>
+</body>
+</html>

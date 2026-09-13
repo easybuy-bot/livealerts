@@ -1,0 +1,43 @@
+# MediaMTX configuration for Live Camera Studio
+# Ingest: RTMP (1935) + SRT (8890). Playback: WebRTC/WHEP (8889) + HLS (8888).
+# Publish authorization + lifecycle are delegated to the PHP webhook via the
+# runOnPublish / runOnUnpublish hook scripts in ./hooks.
+
+logLevel: info
+readTimeout: 15s
+writeTimeout: 15s
+
+# --- Ingest protocols ---
+rtmp: yes
+rtmpAddress: :1935
+srt: yes
+srtAddress: :8890
+
+# --- Playback protocols ---
+webrtc: yes
+webrtcAddress: :8889
+webrtcLocalUDPAddress: :8189
+hls: yes
+hlsAddress: :8888
+hlsVariant: lowLatency
+hlsAlwaysRemux: yes
+
+# --- Recording (per-path, toggled by the app's recording flag in ops docs) ---
+pathDefaults:
+  # Every publish must be authorized by the PHP app. The hook receives the
+  # path + the publisher-supplied key ($MTX_QUERY -> key=...) and calls
+  # camera-webhook.php with an HMAC signature. A non-zero exit denies publish.
+  runOnPublish: /hooks/on_publish.sh $MTX_PATH $MTX_QUERY
+  runOnPublishRestart: no
+  runOnUnpublish: /hooks/on_unpublish.sh $MTX_PATH
+  # Recordings are written locally and can be uploaded by ops tooling.
+  record: no
+  recordPath: /recordings/%path/%Y-%m-%d_%H-%M-%S
+
+paths:
+  # Cameras publish to live/<stream_path>?key=<stream_key>
+  ~^live/.*$:
+    source: publisher
+  # The AI worker republishes processed video here; players pull from processed/
+  ~^processed/.*$:
+    source: publisher

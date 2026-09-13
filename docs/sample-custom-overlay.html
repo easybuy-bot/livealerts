@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sample Custom Overlay — Lower Third</title>
+
+<!--
+  OverlayHub custom overlay - a self-contained demo you can copy and edit.
+
+  How customisation works (the whole contract):
+   1. Embed a schema in a script tag of type "application/json" with id "overlay-schema"
+      (see just below). Field types: text | number | boolean | enum | color.
+   2. The platform injects, at serve time:
+        - window.OVERLAY_SETTINGS  = { group: { key: value } }
+        - CSS variables            --ov-[group]-[key]   (e.g. --ov-box-bgColor)
+        - a call to window.applySettings(settings) on load and on every change.
+   3. Read values through CSS vars and/or applySettings(). Use whichever is easier.
+   Keep the page background transparent so OBS composites it over your scene.
+-->
+
+<script type="application/json" id="overlay-schema">
+{
+  "content": {
+    "title":    { "type": "text", "label": "Title",    "default": "Jhon A", "maxLength": 80 },
+    "subtitle": { "type": "text", "label": "Subtitle", "default": "Live now \u00b7 Say hi in chat!", "maxLength": 120 },
+    "badge":    { "type": "text", "label": "Badge",    "default": "LIVE", "maxLength": 20 }
+  },
+  "box": {
+    "bgColor":     { "type": "color",  "label": "Background",    "default": "#6d28d9" },
+    "textColor":   { "type": "color",  "label": "Text color",    "default": "#ffffff" },
+    "accentColor": { "type": "color",  "label": "Accent",        "default": "#22d3ee" },
+    "opacity":     { "type": "number", "label": "Opacity",       "default": 1,   "min": 0.2, "max": 1,   "step": 0.05 },
+    "radius":      { "type": "number", "label": "Corner radius", "default": 16,  "min": 0,   "max": 40,  "step": 1 },
+    "width":       { "type": "number", "label": "Width",         "default": 520, "min": 260, "max": 900, "step": 10 },
+    "padding":     { "type": "number", "label": "Padding",       "default": 20,  "min": 8,   "max": 48,  "step": 1 }
+  },
+  "text": {
+    "font":         { "type": "enum",   "label": "Font",          "default": "Inter",  "options": ["System","Inter","Georgia","Poppins","Mono"] },
+    "titleSize":    { "type": "number", "label": "Title size",    "default": 34, "min": 16,  "max": 72, "step": 1 },
+    "subtitleSize": { "type": "number", "label": "Subtitle size", "default": 18, "min": 10,  "max": 40, "step": 1 },
+    "weight":       { "type": "number", "label": "Title weight",  "default": 800, "min": 400, "max": 900, "step": 100 }
+  },
+  "position": {
+    "horizontal": { "type": "enum",   "label": "Horizontal", "default": "left",   "options": ["left","center","right"] },
+    "vertical":   { "type": "enum",   "label": "Vertical",   "default": "bottom", "options": ["top","bottom"] },
+    "marginX":    { "type": "number", "label": "Margin X",   "default": 60, "min": 0, "max": 300, "step": 2 },
+    "marginY":    { "type": "number", "label": "Margin Y",   "default": 60, "min": 0, "max": 300, "step": 2 }
+  },
+  "motion": {
+    "entrance":  { "type": "enum",    "label": "Entrance",   "default": "slide", "options": ["none","fade","slide","pop"] },
+    "accentBar": { "type": "boolean", "label": "Accent bar", "default": true },
+    "loop":      { "type": "boolean", "label": "Pulse badge","default": true }
+  }
+}
+</script>
+
+<style>
+  html, body { margin: 0; height: 100%; background: transparent; overflow: hidden; }
+
+  /* Every value below reads a CSS variable with the schema default as a fallback,
+     so this file also looks right when opened directly (no platform injection). */
+  #stage {
+    position: fixed; inset: 0; display: flex; box-sizing: border-box;
+    justify-content: flex-start; align-items: flex-end;
+    padding: calc(var(--ov-position-marginY, 60) * 1px) calc(var(--ov-position-marginX, 60) * 1px);
+  }
+  #card {
+    position: relative; box-sizing: border-box;
+    width: calc(var(--ov-box-width, 520) * 1px);
+    max-width: calc(100vw - var(--ov-position-marginX, 60) * 2px);
+    padding: calc(var(--ov-box-padding, 20) * 1px);
+    padding-left: calc(var(--ov-box-padding, 20) * 1px + 14px);
+    border-radius: calc(var(--ov-box-radius, 16) * 1px);
+    color: var(--ov-box-textColor, #ffffff);
+    opacity: var(--ov-box-opacity, 1);
+    font-family: Inter, system-ui, sans-serif;
+    background:
+      linear-gradient(135deg, rgba(255,255,255,.06), rgba(0,0,0,.20)),
+      var(--ov-box-bgColor, #6d28d9);
+    box-shadow: 0 18px 50px -18px rgba(0,0,0,.65);
+    overflow: hidden;
+  }
+  #card::before {                                   /* left accent bar */
+    content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 8px;
+    background: var(--ov-box-accentColor, #22d3ee);
+    box-shadow: 0 0 18px 0 var(--ov-box-accentColor, #22d3ee);
+  }
+  #card.no-accent::before { display: none; }
+  #card.no-accent { padding-left: calc(var(--ov-box-padding, 20) * 1px); }
+
+  .row { display: flex; align-items: center; gap: 10px; }
+  #b {
+    font-size: 12px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase;
+    padding: 3px 9px; border-radius: 999px;
+    color: var(--ov-box-bgColor, #6d28d9);
+    background: var(--ov-box-accentColor, #22d3ee);
+  }
+  #card.loop #b { animation: pulse 1.6s ease-in-out infinite; }
+  #t { margin: 8px 0 2px; line-height: 1.1;
+       font-size: calc(var(--ov-text-titleSize, 34) * 1px);
+       font-weight: var(--ov-text-weight, 800); }
+  #s { margin: 0; opacity: .9;
+       font-size: calc(var(--ov-text-subtitleSize, 18) * 1px); }
+
+  @keyframes pulse { 0%,100% { transform: scale(1);   opacity: 1;  } 50% { transform: scale(1.06); opacity: .82; } }
+  @keyframes fade  { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes slide { from { opacity: 0; transform: translateX(-24px); } to { opacity: 1; transform: translateX(0); } }
+  @keyframes pop   { from { opacity: 0; transform: scale(.9); } to { opacity: 1; transform: scale(1); } }
+  #card.anim-fade  { animation: fade  .45s ease both; }
+  #card.anim-slide { animation: slide .5s cubic-bezier(.2,.8,.2,1) both; }
+  #card.anim-pop   { animation: pop   .45s cubic-bezier(.2,1.3,.4,1) both; }
+</style>
+</head>
+<body>
+  <div id="stage">
+    <div id="card">
+      <div class="row"><span id="b">LIVE</span></div>
+      <div id="t">Title</div>
+      <div id="s">Subtitle</div>
+    </div>
+  </div>
+
+  <script>
+    // Called by the platform on first load and on every settings change.
+    // Colours and sizes are already handled by the CSS variables above; here we
+    // handle what CSS can't: text content, font mapping, position and motion.
+    window.applySettings = function (s) {
+      s = s || {};
+      var c = s.content || {}, txt = s.text || {}, pos = s.position || {}, mo = s.motion || {};
+      var stage = document.getElementById('stage');
+      var card  = document.getElementById('card');
+      var elT = document.getElementById('t'), elS = document.getElementById('s'), elB = document.getElementById('b');
+
+      elT.textContent = c.title != null ? String(c.title) : '';
+      elS.textContent = c.subtitle != null ? String(c.subtitle) : '';
+      var badge = c.badge != null ? String(c.badge).trim() : '';
+      elB.textContent = badge;
+      elB.style.display = badge ? '' : 'none';
+
+      var fonts = {
+        System:  'system-ui, sans-serif',
+        Inter:   'Inter, system-ui, sans-serif',
+        Georgia: 'Georgia, "Times New Roman", serif',
+        Poppins: 'Poppins, system-ui, sans-serif',
+        Mono:    'ui-monospace, Menlo, Consolas, monospace'
+      };
+      card.style.fontFamily = fonts[txt.font] || fonts.System;
+
+      stage.style.justifyContent = pos.horizontal === 'center' ? 'center'
+        : (pos.horizontal === 'right' ? 'flex-end' : 'flex-start');
+      stage.style.alignItems = pos.vertical === 'top' ? 'flex-start' : 'flex-end';
+
+      card.classList.toggle('no-accent', mo.accentBar === false);
+      card.classList.toggle('loop', mo.loop !== false);
+
+      var ent = mo.entrance || 'none';
+      card.classList.remove('anim-fade', 'anim-slide', 'anim-pop');
+      void card.offsetWidth;                 // force reflow so the animation restarts
+      if (ent !== 'none') card.classList.add('anim-' + ent);
+    };
+  </script>
+</body>
+</html>

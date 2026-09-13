@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Alert Builder — LiveAlerts</title>
+<link rel="stylesheet" href="/css/app.css" />
+<link rel="stylesheet" href="/overlay/alert.css" />
+</head>
+<body>
+  <div class="container page" style="max-width:1500px;">
+    <div class="row" style="margin-bottom:16px; flex-wrap:wrap;">
+      <div>
+        <h1 style="margin:0;">Alert Builder</h1>
+        <div class="muted small" id="tpl-meta"></div>
+        <div class="muted small" style="margin-top:2px; opacity:.75;">
+          <span class="kbd">Ctrl</span>+<span class="kbd">S</span> save ·
+          <span class="kbd">Ctrl</span>+<span class="kbd">Z</span> undo ·
+          <span class="kbd">Ctrl</span>+<span class="kbd">Shift</span>+<span class="kbd">Z</span> redo
+        </div>
+      </div>
+      <div class="spacer"></div>
+      <div class="row" style="gap:8px; flex-wrap:wrap;">
+        <span class="dirty-badge" id="dirty" style="display:none;">Unsaved changes</span>
+        <select id="tpl-select" class="btn ghost" style="padding:9px 12px;"></select>
+        <button class="btn ghost" id="undo-btn" title="Undo (Ctrl+Z)" disabled>Undo</button>
+        <button class="btn ghost" id="redo-btn" title="Redo (Ctrl+Shift+Z)" disabled>Redo</button>
+        <button class="btn ghost" id="duplicate-btn">Duplicate</button>
+        <select id="ovl-select" class="btn ghost" style="padding:9px 12px; display:none;" title="Overlay that receives test alerts"></select>
+        <button class="btn" id="test-btn">▶ Test Alert</button>
+        <button class="btn green" id="save-btn">Save</button>
+      </div>
+    </div>
+
+    <div class="builder">
+      <div class="panel" id="layers-panel">
+        <h3>Layers</h3>
+        <div class="layer-list" id="layer-list"></div>
+        <div class="row" style="margin-top:10px; gap:6px;">
+          <button class="btn small ghost" id="add-text">+ Text</button>
+          <button class="btn small ghost" id="add-image">+ Image</button>
+          <button class="btn small ghost" id="add-particles">+ Particles</button>
+        </div>
+        <hr class="divider" />
+        <div class="layer-list" id="global-list"></div>
+      </div>
+
+      <div class="preview-stage" id="stage">
+        <div class="stage-inner" id="stage-inner"></div>
+      </div>
+
+      <div class="panel" id="props-panel">
+        <h3>Properties</h3>
+        <div id="props"></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/overlay/renderer.js"></script>
+  <script src="/js/app.js"></script>
+  <script src="/js/builder.js"></script>
+</body>
+</html>

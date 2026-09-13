@@ -1,0 +1,2652 @@
+{
+ "preset": {
+  "template": {
+   "default": "custom",
+   "label": "Template preset",
+   "type": "enum",
+   "options": [
+    "custom",
+    "premium-glass",
+    "purple-cosmic",
+    "neon",
+    "dark-glass"
+   ]
+  }
+ },
+ "general": {
+  "width": {
+   "default": 420,
+   "label": "Width",
+   "type": "number",
+   "min": 200,
+   "max": 1600,
+   "step": 1
+  },
+  "height": {
+   "default": 900,
+   "label": "Height",
+   "type": "number",
+   "min": 200,
+   "max": 2160,
+   "step": 1
+  },
+  "scale": {
+   "default": 1,
+   "label": "Scale",
+   "type": "number",
+   "min": 0.5,
+   "max": 2,
+   "step": 0.05
+  },
+  "opacity": {
+   "default": 1,
+   "label": "Opacity",
+   "type": "number",
+   "min": 0.1,
+   "max": 1,
+   "step": 0.05
+  },
+  "maxMessages": {
+   "default": 8,
+   "label": "Max messages",
+   "type": "number",
+   "min": 1,
+   "max": 40,
+   "step": 1
+  }
+ },
+ "canvas": {
+  "width": {
+   "default": 1920,
+   "label": "Width",
+   "type": "number",
+   "min": 320,
+   "max": 3840,
+   "step": 1
+  },
+  "height": {
+   "default": 1080,
+   "label": "Height",
+   "type": "number",
+   "min": 240,
+   "max": 2160,
+   "step": 1
+  },
+  "previewBackground": {
+   "default": "#171322",
+   "label": "Preview background",
+   "type": "color"
+  },
+  "safeArea": {
+   "default": 12,
+   "label": "Safe area",
+   "type": "number",
+   "min": 0,
+   "max": 100,
+   "step": 1
+  }
+ },
+ "layout": {
+  "mode": {
+   "default": "vertical",
+   "label": "Mode",
+   "type": "enum",
+   "options": [
+    "vertical",
+    "horizontal"
+   ]
+  },
+  "alignment": {
+   "default": "bottom",
+   "label": "Alignment",
+   "type": "enum",
+   "options": [
+    "top",
+    "bottom"
+   ]
+  },
+  "horizontal": {
+   "default": "left",
+   "label": "Horizontal",
+   "type": "enum",
+   "options": [
+    "left",
+    "right"
+   ]
+  },
+  "gap": {
+   "default": 10,
+   "label": "Gap",
+   "type": "number",
+   "min": 0,
+   "max": 48,
+   "step": 1
+  },
+  "paddingX": {
+   "default": 12,
+   "label": "Padding x",
+   "type": "number",
+   "min": 0,
+   "max": 100,
+   "step": 1
+  },
+  "paddingY": {
+   "default": 12,
+   "label": "Padding y",
+   "type": "number",
+   "min": 0,
+   "max": 100,
+   "step": 1
+  }
+ },
+ "horizontal": {
+  "direction": {
+   "default": "ltr",
+   "label": "Direction",
+   "type": "enum",
+   "options": [
+    "ltr",
+    "rtl"
+   ]
+  },
+  "speed": {
+   "default": 260,
+   "label": "Insertion speed (ms)",
+   "type": "number",
+   "min": 80,
+   "max": 1000,
+   "step": 10
+  },
+  "gap": {
+   "default": 28,
+   "label": "Gap between messages",
+   "type": "number",
+   "min": 0,
+   "max": 300,
+   "step": 1
+  },
+  "verticalPosition": {
+   "default": "middle",
+   "label": "Vertical position",
+   "type": "enum",
+   "options": [
+    "top",
+    "middle",
+    "bottom"
+   ]
+  },
+  "offset": {
+   "default": 40,
+   "label": "Vertical offset",
+   "type": "number",
+   "min": 0,
+   "max": 2000,
+   "step": 1
+  },
+  "maxVisible": {
+   "default": 12,
+   "label": "Max visible messages",
+   "type": "number",
+   "min": 1,
+   "max": 60,
+   "step": 1
+  },
+  "overflow": {
+   "default": "queue",
+   "label": "Overflow",
+   "type": "enum",
+   "options": [
+    "queue",
+    "drop-oldest",
+    "drop-newest"
+   ]
+  },
+  "lifetime": {
+   "default": 0,
+   "label": "Lifetime (s, 0=until offscreen)",
+   "type": "number",
+   "min": 0,
+   "max": 300,
+   "step": 1
+  },
+  "entrance": {
+   "default": "fade",
+   "label": "Entrance",
+   "type": "enum",
+   "options": [
+    "none",
+    "fade",
+    "scale"
+   ]
+  },
+  "exit": {
+   "default": "fade",
+   "label": "Exit",
+   "type": "enum",
+   "options": [
+    "none",
+    "fade"
+   ]
+  },
+  "easing": {
+   "default": "linear",
+   "label": "Travel easing",
+   "type": "enum",
+   "options": [
+    "linear",
+    "ease-out"
+   ]
+  }
+ },
+ "messageCard": {
+  "enabled": {
+   "default": true,
+   "label": "Enabled",
+   "type": "boolean"
+  },
+  "paddingX": {
+   "default": 13,
+   "label": "Padding x",
+   "type": "number",
+   "min": 0,
+   "max": 48,
+   "step": 1
+  },
+  "paddingY": {
+   "default": 9,
+   "label": "Padding y",
+   "type": "number",
+   "min": 0,
+   "max": 48,
+   "step": 1
+  }
+ },
+ "typography": {
+  "font": {
+   "default": "system-ui",
+   "label": "Font",
+   "type": "enum",
+   "options": [
+    "system-ui",
+    "Arial",
+    "Georgia",
+    "Verdana",
+    "Trebuchet MS",
+    "Noto Sans"
+   ]
+  },
+  "size": {
+   "default": 14,
+   "label": "Size",
+   "type": "number",
+   "min": 10,
+   "max": 48,
+   "step": 1
+  },
+  "weight": {
+   "default": 400,
+   "label": "Weight",
+   "type": "number",
+   "min": 100,
+   "max": 900,
+   "step": 100
+  },
+  "lineHeight": {
+   "default": 1.35,
+   "label": "Line height",
+   "type": "number",
+   "min": 1,
+   "max": 2.5,
+   "step": 0.05
+  },
+  "letterSpacing": {
+   "default": 0,
+   "label": "Letter spacing",
+   "type": "number",
+   "min": -1,
+   "max": 5,
+   "step": 0.1
+  },
+  "textShadow": {
+   "default": true,
+   "label": "Text shadow",
+   "type": "boolean"
+  },
+  "textAlign": {
+   "default": "left",
+   "label": "Text align",
+   "type": "enum",
+   "options": [
+    "left",
+    "center",
+    "right"
+   ]
+  }
+ },
+ "avatar": {
+  "show": {
+   "default": true,
+   "label": "Show",
+   "type": "boolean"
+  },
+  "size": {
+   "default": 26,
+   "label": "Size",
+   "type": "number",
+   "min": 16,
+   "max": 96,
+   "step": 1
+  },
+  "shape": {
+   "default": "circle",
+   "label": "Shape",
+   "type": "enum",
+   "options": [
+    "circle",
+    "rounded",
+    "square"
+   ]
+  },
+  "borderWidth": {
+   "default": 0,
+   "label": "Border width",
+   "type": "number",
+   "min": 0,
+   "max": 6,
+   "step": 1
+  },
+  "borderColor": {
+   "default": "#ffffff",
+   "label": "Border color",
+   "type": "color"
+  },
+  "opacity": {
+   "default": 1,
+   "label": "Opacity",
+   "type": "number",
+   "min": 0,
+   "max": 1,
+   "step": 0.05
+  },
+  "spacing": {
+   "default": 10,
+   "label": "Spacing",
+   "type": "number",
+   "min": 0,
+   "max": 32,
+   "step": 1
+  },
+  "position": {
+   "default": "left",
+   "label": "Position",
+   "type": "enum",
+   "options": [
+    "left",
+    "right"
+   ]
+  }
+ },
+ "username": {
+  "show": {
+   "default": true,
+   "label": "Show",
+   "type": "boolean"
+  },
+  "colorMode": {
+   "default": "stable",
+   "label": "Color mode",
+   "type": "enum",
+   "options": [
+    "stable",
+    "fixed"
+   ]
+  },
+  "color": {
+   "default": "#ffffff",
+   "label": "Color",
+   "type": "color"
+  },
+  "size": {
+   "default": 14,
+   "label": "Size",
+   "type": "number",
+   "min": 10,
+   "max": 40,
+   "step": 1
+  },
+  "weight": {
+   "default": 700,
+   "label": "Weight",
+   "type": "number",
+   "min": 100,
+   "max": 900,
+   "step": 100
+  },
+  "maxWidth": {
+   "default": 240,
+   "label": "Max width",
+   "type": "number",
+   "min": 60,
+   "max": 800,
+   "step": 1
+  },
+  "overflow": {
+   "default": "ellipsis",
+   "label": "Overflow",
+   "type": "enum",
+   "options": [
+    "ellipsis",
+    "wrap"
+   ]
+  }
+ },
+ "badges": {
+  "show": {
+   "default": true,
+   "label": "Show",
+   "type": "boolean"
+  },
+  "owner": {
+   "default": true,
+   "label": "Owner",
+   "type": "boolean"
+  },
+  "moderator": {
+   "default": true,
+   "label": "Moderator",
+   "type": "boolean"
+  },
+  "member": {
+   "default": true,
+   "label": "Member",
+   "type": "boolean"
+  },
+  "size": {
+   "default": 9,
+   "label": "Size",
+   "type": "number",
+   "min": 8,
+   "max": 24,
+   "step": 1
+  },
+  "spacing": {
+   "default": 6,
+   "label": "Spacing",
+   "type": "number",
+   "min": 0,
+   "max": 24,
+   "step": 1
+  }
+ },
+ "timestamp": {
+  "show": {
+   "default": true,
+   "label": "Show",
+   "type": "boolean"
+  },
+  "format": {
+   "default": "24",
+   "label": "Format",
+   "type": "enum",
+   "options": [
+    "12",
+    "24"
+   ]
+  },
+  "timezone": {
+   "default": "local",
+   "label": "Timezone",
+   "type": "enum",
+   "options": [
+    "local",
+    "UTC"
+   ]
+  },
+  "color": {
+   "default": "#b8b4c6",
+   "label": "Color",
+   "type": "color"
+  },
+  "opacity": {
+   "default": 0.7,
+   "label": "Opacity",
+   "type": "number",
+   "min": 0,
+   "max": 1,
+   "step": 0.05
+  },
+  "size": {
+   "default": 10,
+   "label": "Size",
+   "type": "number",
+   "min": 8,
+   "max": 24,
+   "step": 1
+  }
+ },
+ "message": {
+  "color": {
+   "default": "#ffffff",
+   "label": "Color",
+   "type": "color"
+  },
+  "maxLength": {
+   "default": 1000,
+   "label": "Max length",
+   "type": "number",
+   "min": 20,
+   "max": 2000,
+   "step": 1
+  },
+  "wrap": {
+   "default": true,
+   "label": "Wrap",
+   "type": "boolean"
+  }
+ },
+ "background": {
+  "type": {
+   "default": "transparent",
+   "label": "Type",
+   "type": "enum",
+   "options": [
+    "transparent",
+    "solid",
+    "gradient",
+    "glass"
+   ]
+  },
+  "color": {
+   "default": "#171322",
+   "label": "Color",
+   "type": "color"
+  },
+  "secondColor": {
+   "default": "#39215a",
+   "label": "Second color",
+   "type": "color"
+  },
+  "opacity": {
+   "default": 0,
+   "label": "Opacity",
+   "type": "number",
+   "min": 0,
+   "max": 1,
+   "step": 0.05
+  },
+  "blur": {
+   "default": 0,
+   "label": "Blur",
+   "type": "number",
+   "min": 0,
+   "max": 12,
+   "step": 1
+  }
+ },
+ "border": {
+  "enabled": {
+   "default": true,
+   "label": "Enabled",
+   "type": "boolean"
+  },
+  "color": {
+   "default": "#ffffff",
+   "label": "Color",
+   "type": "color"
+  },
+  "opacity": {
+   "default": 0.14,
+   "label": "Opacity",
+   "type": "number",
+   "min": 0,
+   "max": 1,
+   "step": 0.01
+  },
+  "width": {
+   "default": 1,
+   "label": "Width",
+   "type": "number",
+   "min": 0,
+   "max": 6,
+   "step": 0.5
+  },
+  "style": {
+   "default": "solid",
+   "label": "Style",
+   "type": "enum",
+   "options": [
+    "solid",
+    "dashed",
+    "dotted"
+   ]
+  },
+  "radiusTopLeft": {
+   "default": 14,
+   "label": "Radius top left",
+   "type": "number",
+   "min": 0,
+   "max": 80,
+   "step": 1
+  },
+  "radiusTopRight": {
+   "default": 14,
+   "label": "Radius top right",
+   "type": "number",
+   "min": 0,
+   "max": 80,
+   "step": 1
+  },
+  "radiusBottomLeft": {
+   "default": 14,
+   "label": "Radius bottom left",
+   "type": "number",
+   "min": 0,
+   "max": 80,
+   "step": 1
+  },
+  "radiusBottomRight": {
+   "default": 14,
+   "label": "Radius bottom right",
+   "type": "number",
+   "min": 0,
+   "max": 80,
+   "step": 1
+  }
+ },
+ "shine": {
+  "enabled": {
+   "default": true,
+   "label": "Enabled",
+   "type": "boolean"
+  },
+  "color": {
+   "default": "#ffffff",
+   "label": "Color",
+   "type": "color"
+  },
+  "opacity": {
+   "default": 1,
+   "label": "Opacity",
+   "type": "number",
+   "min": 0,
+   "max": 1,
+   "step": 0.05
+  },
+  "speed": {
+   "default": 12,
+   "label": "Speed",
+   "type": "number",
+   "min": 3,
+   "max": 60,
+   "step": 0.5
+  },
+  "dotSize": {
+   "default": 2,
+   "label": "Dot size",
+   "type": "number",
+   "min": 1,
+   "max": 12,
+   "step": 0.5
+  },
+  "count": {
+   "default": 1,
+   "label": "Dots (count)",
+   "type": "number",
+   "min": 1,
+   "max": 4,
+   "step": 1
+  },
+  "thickness": {
+   "default": 2.5,
+   "label": "Thickness",
+   "type": "number",
+   "min": 1,
+   "max": 6,
+   "step": 0.5
+  },
+  "trailLength": {
+   "default": 0,
+   "label": "Trail length",
+   "type": "number",
+   "min": 0,
+   "max": 40,
+   "step": 1
+  },
+  "layers": {
+   "default": 3,
+   "label": "Layers",
+   "type": "number",
+   "min": 1,
+   "max": 6,
+   "step": 1
+  },
+  "direction": {
+   "default": "clockwise",
+   "label": "Direction",
+   "type": "enum",
+   "options": [
+    "clockwise",
+    "counterclockwise"
+   ]
+  },
+  "startPosition": {
+   "default": 62,
+   "label": "Start position",
+   "type": "number",
+   "min": 0,
+   "max": 100,
+   "step": 1
+  },
+  "easing": {
+   "default": "linear",
+   "label": "Easing",
+   "type": "enum",
+   "options": [
+    "linear",
+    "ease-in-out"
+   ]
+  }
+ },
+ "glassShine": {
+  "mode": {
+   "default": "off",
+   "label": "Diagonal shine mode",
+   "type": "enum",
+   "options": [
+    "off",
+    "entrance",
+    "continuous",
+    "periodic",
+    "special-only"
+   ]
+  },
+  "color": {
+   "default": "#ffffff",
+   "label": "Shine color",
+   "type": "color"
+  },
+  "opacity": {
+   "default": 0.28,
+   "label": "Shine opacity",
+   "type": "number",
+   "min": 0,
+   "max": 1,
+   "step": 0.02
+  },
+  "width": {
+   "default": 16,
+   "label": "Band width (%)",
+   "type": "number",
+   "min": 4,
+   "max": 60,
+   "step": 1
+  },
+  "angle": {
+   "default": 18,
+   "label": "Angle (deg)",
+   "type": "number",
+   "min": 0,
+   "max": 90,
+   "step": 1
+  },
+  "duration": {
+   "default": 1100,
+   "label": "Sweep duration (ms)",
+   "type": "number",
+   "min": 200,
+   "max": 4000,
+   "step": 50
+  },
+  "period": {
+   "default": 6,
+   "label": "Period (s)",
+   "type": "number",
+   "min": 1,
+   "max": 60,
+   "step": 1
+  },
+  "specialOnlyRoles": {
+   "default": true,
+   "label": "Boost special role cards",
+   "type": "boolean"
+  }
+ },
+ "glow": {
+  "enabled": {
+   "default": true,
+   "label": "Enabled",
+   "type": "boolean"
+  },
+  "opacity": {
+   "default": 0.35,
+   "label": "Opacity",
+   "type": "number",
+   "min": 0,
+   "max": 1,
+   "step": 0.05
+  },
+  "blur": {
+   "default": 4,
+   "label": "Blur",
+   "type": "number",
+   "min": 0,
+   "max": 12,
+   "step": 1
+  },
+  "shadowEnabled": {
+   "default": false,
+   "label": "Shadow enabled",
+   "type": "boolean"
+  },
+  "shadowColor": {
+   "default": "#000000",
+   "label": "Shadow color",
+   "type": "color"
+  },
+  "shadowOpacity": {
+   "default": 0.3,
+   "label": "Shadow opacity",
+   "type": "number",
+   "min": 0,
+   "max": 1,
+   "step": 0.05
+  },
+  "shadowBlur": {
+   "default": 8,
+   "label": "Shadow blur",
+   "type": "number",
+   "min": 0,
+   "max": 24,
+   "step": 1
+  },
+  "shadowX": {
+   "default": 0,
+   "label": "Shadow x",
+   "type": "number",
+   "min": -20,
+   "max": 20,
+   "step": 1
+  },
+  "shadowY": {
+   "default": 2,
+   "label": "Shadow y",
+   "type": "number",
+   "min": -20,
+   "max": 20,
+   "step": 1
+  }
+ },
+ "animation": {
+  "entrance": {
+   "default": "pop",
+   "label": "Entrance",
+   "type": "enum",
+   "options": [
+    "off",
+    "fade",
+    "slide-up",
+    "slide-left",
+    "slide-right",
+    "scale",
+    "pop",
+    "blur"
+   ]
+  },
+  "exit": {
+   "default": "fade",
+   "label": "Exit",
+   "type": "enum",
+   "options": [
+    "off",
+    "fade",
+    "slide",
+    "shrink",
+    "blur"
+   ]
+  },
+  "duration": {
+   "default": 350,
+   "label": "Duration",
+   "type": "number",
+   "min": 0,
+   "max": 1500,
+   "step": 50
+  },
+  "delay": {
+   "default": 0,
+   "label": "Delay",
+   "type": "number",
+   "min": 0,
+   "max": 1000,
+   "step": 50
+  },
+  "easing": {
+   "default": "ease-out",
+   "label": "Easing",
+   "type": "enum",
+   "options": [
+    "linear",
+    "ease",
+    "ease-in",
+    "ease-out",
+    "ease-in-out"
+   ]
+  }
+ },
+ "superChat": {
+  "enabled": {
+   "default": true,
+   "label": "Enabled",
+   "type": "boolean"
+  },
+  "background": {
+   "default": "#362b08",
+   "label": "Background",
+   "type": "color"
+  },
+  "backgroundOpacity": {
+   "default": 0,
+   "label": "Background opacity",
+   "type": "number",
+   "min": 0,
+   "max": 1,
+   "step": 0.05
+  },
+  "borderColor": {
+   "default": "#ffc107",
+   "label": "Border color",
+   "type": "color"
+  },
+  "amountColor": {
+   "default": "#ffc107",
+   "label": "Amount color",
+   "type": "color"
+  },
+  "amountSize": {
+   "default": 12,
+   "label": "Amount size",
+   "type": "number",
+   "min": 10,
+   "max": 36,
+   "step": 1
+  },
+  "minimumAmount": {
+   "default": 0,
+   "label": "Minimum amount",
+   "type": "number",
+   "min": 0,
+   "max": 10000,
+   "step": 1
+  },
+  "highlightDuration": {
+   "default": 20,
+   "label": "Highlight duration",
+   "type": "number",
+   "min": 0,
+   "max": 120,
+   "step": 1
+  },
+  "specialShine": {
+   "default": true,
+   "label": "Special shine",
+   "type": "boolean"
+  }
+ },
+ "superSticker": {
+  "enabled": {
+   "default": true,
+   "label": "Enabled",
+   "type": "boolean"
+  },
+  "background": {
+   "default": "#132b39",
+   "label": "Background",
+   "type": "color"
+  },
+  "borderColor": {
+   "default": "#7ad7ff",
+   "label": "Border color",
+   "type": "color"
+  },
+  "showAmount": {
+   "default": true,
+   "label": "Show amount",
+   "type": "boolean"
+  },
+  "highlightDuration": {
+   "default": 20,
+   "label": "Highlight duration",
+   "type": "number",
+   "min": 0,
+   "max": 120,
+   "step": 1
+  }
+ },
+ "membership": {
+  "enabled": {
+   "default": true,
+   "label": "Enabled",
+   "type": "boolean"
+  },
+  "label": {
+   "default": "MEMBER",
+   "label": "Label",
+   "type": "text",
+   "maxLength": 30
+  },
+  "borderColor": {
+   "default": "#53d986",
+   "label": "Border color",
+   "type": "color"
+  },
+  "textColor": {
+   "default": "#53d986",
+   "label": "Text color",
+   "type": "color"
+  },
+  "highlight": {
+   "default": false,
+   "label": "Highlight",
+   "type": "boolean"
+  }
+ },
+ "filters": {
+  "hideLinks": {
+   "default": false,
+   "label": "Hide links",
+   "type": "boolean"
+  },
+  "blockedWords": {
+   "default": "",
+   "label": "Blocked words",
+   "type": "text",
+   "maxLength": 1000
+  },
+  "blockedUsernames": {
+   "default": "",
+   "label": "Blocked usernames",
+   "type": "text",
+   "maxLength": 1000
+  },
+  "duplicates": {
+   "default": true,
+   "label": "Duplicates",
+   "type": "boolean"
+  },
+  "minLength": {
+   "default": 0,
+   "label": "Min length",
+   "type": "number",
+   "min": 0,
+   "max": 100,
+   "step": 1
+  },
+  "maxLength": {
+   "default": 2000,
+   "label": "Max length",
+   "type": "number",
+   "min": 1,
+   "max": 2000,
+   "step": 1
+  },
+  "hideEmpty": {
+   "default": true,
+   "label": "Hide empty",
+   "type": "boolean"
+  },
+  "spamLimit": {
+   "default": 5,
+   "label": "Spam limit",
+   "type": "number",
+   "min": 1,
+   "max": 30,
+   "step": 1
+  }
+ },
+ "behavior": {
+  "newestAtTop": {
+   "default": false,
+   "label": "Newest at top",
+   "type": "boolean"
+  },
+  "paused": {
+   "default": false,
+   "label": "Paused",
+   "type": "boolean"
+  },
+  "lifetime": {
+   "default": 0,
+   "label": "Lifetime",
+   "type": "number",
+   "min": 0,
+   "max": 300,
+   "step": 1
+  },
+  "overflow": {
+   "default": "fade",
+   "label": "Overflow",
+   "type": "enum",
+   "options": [
+    "remove",
+    "fade",
+    "shrink"
+   ]
+  },
+  "offline": {
+   "default": "transparent",
+   "label": "Offline",
+   "type": "enum",
+   "options": [
+    "transparent",
+    "waiting",
+    "custom"
+   ]
+  },
+  "offlineText": {
+   "default": "Waiting for your next live stream",
+   "label": "Offline text",
+   "type": "text",
+   "maxLength": 100
+  }
+ },
+ "performance": {
+  "reducedMotion": {
+   "default": false,
+   "label": "Reduced motion",
+   "type": "boolean"
+  },
+  "disableGlow": {
+   "default": false,
+   "label": "Disable glow",
+   "type": "boolean"
+  },
+  "queueLimit": {
+   "default": 100,
+   "label": "Queue limit",
+   "type": "number",
+   "min": 10,
+   "max": 300,
+   "step": 1
+  }
+ },
+ "obs": {
+  "hideStatus": {
+   "default": false,
+   "label": "Hide status",
+   "type": "boolean"
+  }
+ },
+ "advanced": {
+  "locale": {
+   "default": "auto",
+   "label": "Locale",
+   "type": "enum",
+   "options": [
+    "auto",
+    "en-IN",
+    "hi-IN",
+    "en-US"
+   ]
+  }
+ },
+ "media": {
+  "enabled": {
+   "default": true,
+   "label": "Enable media detection",
+   "type": "boolean"
+  },
+  "showThumbnail": {
+   "default": true,
+   "label": "Show thumbnail",
+   "type": "boolean"
+  },
+  "showPlayButton": {
+   "default": true,
+   "label": "Show play button",
+   "type": "boolean"
+  },
+  "showProvider": {
+   "default": true,
+   "label": "Show provider label",
+   "type": "boolean"
+  },
+  "showSubmitter": {
+   "default": true,
+   "label": "Show submitter name",
+   "type": "boolean"
+  },
+  "showMessageText": {
+   "default": true,
+   "label": "Keep message text",
+   "type": "boolean"
+  },
+  "showOriginalUrl": {
+   "default": false,
+   "label": "Keep the raw URL in text",
+   "type": "boolean"
+  },
+  "showMediaOnly": {
+   "default": false,
+   "label": "Show media card only",
+   "type": "boolean"
+  },
+  "cardWidth": {
+   "default": 260,
+   "label": "Card width",
+   "type": "number",
+   "min": 120,
+   "max": 480,
+   "step": 2
+  },
+  "cardHeight": {
+   "default": 150,
+   "label": "Thumbnail height",
+   "type": "number",
+   "min": 60,
+   "max": 320,
+   "step": 2
+  },
+  "borderRadius": {
+   "default": 12,
+   "label": "Corner radius",
+   "type": "number",
+   "min": 0,
+   "max": 40,
+   "step": 1
+  },
+  "borderWidth": {
+   "default": 1,
+   "label": "Border width",
+   "type": "number",
+   "min": 0,
+   "max": 8,
+   "step": 1
+  },
+  "borderColor": {
+   "default": "#6c5ce7",
+   "label": "Border color",
+   "type": "color"
+  },
+  "background": {
+   "default": "#14101f",
+   "label": "Background",
+   "type": "color"
+  },
+  "backgroundOpacity": {
+   "default": 0.85,
+   "label": "Background opacity",
+   "type": "number",
+   "min": 0,
+   "max": 1,
+   "step": 0.05
+  },
+  "shadowEnabled": {
+   "default": true,
+   "label": "Shadow",
+   "type": "boolean"
+  },
+  "shadowBlur": {
+   "default": 18,
+   "label": "Shadow blur",
+   "type": "number",
+   "min": 0,
+   "max": 60,
+   "step": 1
+  },
+  "animation": {
+   "default": "fade",
+   "label": "Card animation",
+   "type": "enum",
+   "options": [
+    "none",
+    "fade",
+    "scale",
+    "pop"
+   ]
+  },
+  "horizontalMediaMode": {
+   "default": "compact",
+   "label": "Horizontal media mode",
+   "type": "enum",
+   "options": [
+    "compact",
+    "normal",
+    "disabled"
+   ]
+  },
+  "allowYouTube": {
+   "default": true,
+   "label": "Allow YouTube",
+   "type": "boolean"
+  },
+  "allowVimeo": {
+   "default": true,
+   "label": "Allow Vimeo",
+   "type": "boolean"
+  },
+  "allowDirectVideo": {
+   "default": true,
+   "label": "Allow direct MP4/WebM",
+   "type": "boolean"
+  },
+  "allowImages": {
+   "default": true,
+   "label": "Allow images",
+   "type": "boolean"
+  },
+  "allowGIF": {
+   "default": true,
+   "label": "Allow GIF/WebP",
+   "type": "boolean"
+  }
+ },
+ "mediaPlayer": {
+  "enabled": {
+   "default": true,
+   "label": "Enable video player",
+   "type": "boolean"
+  },
+  "clickToOpen": {
+   "default": true,
+   "label": "Open on card click",
+   "type": "boolean"
+  },
+  "autoplay": {
+   "default": true,
+   "label": "Autoplay video",
+   "type": "boolean"
+  },
+  "startMuted": {
+   "default": false,
+   "label": "Start muted",
+   "type": "boolean"
+  },
+  "defaultVolume": {
+   "default": 80,
+   "label": "Volume",
+   "type": "number",
+   "min": 0,
+   "max": 100,
+   "step": 1
+  },
+  "position": {
+   "default": "center",
+   "label": "Position",
+   "type": "enum",
+   "options": [
+    "center",
+    "top",
+    "bottom",
+    "custom"
+   ]
+  },
+  "x": {
+   "default": 50,
+   "label": "Custom X (%)",
+   "type": "number",
+   "min": 0,
+   "max": 100,
+   "step": 1
+  },
+  "y": {
+   "default": 50,
+   "label": "Custom Y (%)",
+   "type": "number",
+   "min": 0,
+   "max": 100,
+   "step": 1
+  },
+  "width": {
+   "default": 720,
+   "label": "Width",
+   "type": "number",
+   "min": 240,
+   "max": 1920,
+   "step": 10
+  },
+  "height": {
+   "default": 405,
+   "label": "Height",
+   "type": "number",
+   "min": 135,
+   "max": 1080,
+   "step": 10
+  },
+  "maxWidth": {
+   "default": 90,
+   "label": "Max width (vw %)",
+   "type": "number",
+   "min": 20,
+   "max": 100,
+   "step": 1
+  },
+  "maxHeight": {
+   "default": 90,
+   "label": "Max height (vh %)",
+   "type": "number",
+   "min": 20,
+   "max": 100,
+   "step": 1
+  },
+  "borderRadius": {
+   "default": 14,
+   "label": "Corner radius",
+   "type": "number",
+   "min": 0,
+   "max": 40,
+   "step": 1
+  },
+  "borderWidth": {
+   "default": 0,
+   "label": "Border width",
+   "type": "number",
+   "min": 0,
+   "max": 10,
+   "step": 1
+  },
+  "borderColor": {
+   "default": "#6c5ce7",
+   "label": "Border color",
+   "type": "color"
+  },
+  "shadowBlur": {
+   "default": 40,
+   "label": "Shadow blur",
+   "type": "number",
+   "min": 0,
+   "max": 120,
+   "step": 1
+  },
+  "shadowOpacity": {
+   "default": 0.5,
+   "label": "Shadow opacity",
+   "type": "number",
+   "min": 0,
+   "max": 1,
+   "step": 0.05
+  },
+  "background": {
+   "default": "#0b0910",
+   "label": "Player background",
+   "type": "color"
+  },
+  "backgroundOpacity": {
+   "default": 1,
+   "label": "Player bg opacity",
+   "type": "number",
+   "min": 0,
+   "max": 1,
+   "step": 0.05
+  },
+  "overlayOpacity": {
+   "default": 0.6,
+   "label": "Backdrop dim",
+   "type": "number",
+   "min": 0,
+   "max": 1,
+   "step": 0.05
+  },
+  "animation": {
+   "default": "scale",
+   "label": "Open animation",
+   "type": "enum",
+   "options": [
+    "none",
+    "fade",
+    "scale",
+    "pop",
+    "slide"
+   ]
+  },
+  "animationDuration": {
+   "default": 260,
+   "label": "Animation duration (ms)",
+   "type": "number",
+   "min": 0,
+   "max": 1000,
+   "step": 10
+  },
+  "showCloseButton": {
+   "default": true,
+   "label": "Show close button",
+   "type": "boolean"
+  },
+  "showControls": {
+   "default": true,
+   "label": "Show controls",
+   "type": "boolean"
+  },
+  "showProgress": {
+   "default": true,
+   "label": "Show progress bar",
+   "type": "boolean"
+  },
+  "showVolume": {
+   "default": true,
+   "label": "Show volume",
+   "type": "boolean"
+  },
+  "showSeekButtons": {
+   "default": true,
+   "label": "Show seek buttons",
+   "type": "boolean"
+  },
+  "showFullscreen": {
+   "default": true,
+   "label": "Show fullscreen",
+   "type": "boolean"
+  },
+  "seekStep": {
+   "default": 10,
+   "label": "Seek step (s)",
+   "type": "number",
+   "min": 1,
+   "max": 60,
+   "step": 1
+  },
+  "defaultVolume": {
+   "default": 80,
+   "label": "Default volume",
+   "type": "number",
+   "min": 0,
+   "max": 100,
+   "step": 1
+  },
+  "autoClose": {
+   "default": false,
+   "label": "Auto-close when finished",
+   "type": "boolean"
+  },
+  "autoCloseSeconds": {
+   "default": 5,
+   "label": "Auto-close delay (s)",
+   "type": "number",
+   "min": 1,
+   "max": 60,
+   "step": 1
+  }
+ },
+ "mediaQueue": {
+  "enabled": {
+   "default": true,
+   "label": "Enable queue",
+   "type": "boolean"
+  },
+  "maxQueueItems": {
+   "default": 20,
+   "label": "Max queue items",
+   "type": "number",
+   "min": 1,
+   "max": 100,
+   "step": 1
+  },
+  "autoPlayNext": {
+   "default": true,
+   "label": "Auto-play next",
+   "type": "boolean"
+  },
+  "queueMode": {
+   "default": "auto-next",
+   "label": "Queue mode",
+   "type": "enum",
+   "options": [
+    "manual",
+    "auto-next",
+    "admin-approved"
+   ]
+  },
+  "showPanel": {
+   "default": false,
+   "label": "Show queue panel",
+   "type": "boolean"
+  },
+  "panelPosition": {
+   "default": "bottom-right",
+   "label": "Panel position",
+   "type": "enum",
+   "options": [
+    "top-left",
+    "top-right",
+    "bottom-left",
+    "bottom-right"
+   ]
+  },
+  "preventDuplicates": {
+   "default": true,
+   "label": "Prevent duplicates",
+   "type": "boolean"
+  },
+  "maxSubmissionsPerUser": {
+   "default": 3,
+   "label": "Max per user (0=\u221e)",
+   "type": "number",
+   "min": 0,
+   "max": 20,
+   "step": 1
+  },
+  "submissionCooldown": {
+   "default": 30,
+   "label": "Cooldown per user (s)",
+   "type": "number",
+   "min": 0,
+   "max": 600,
+   "step": 5
+  }
+ },
+ "mediaModeration": {
+  "enabled": {
+   "default": true,
+   "label": "Enable moderation",
+   "type": "boolean"
+  },
+  "allowedDomains": {
+   "default": "",
+   "label": "Allowed domains (comma)",
+   "type": "text",
+   "maxLength": 200
+  },
+  "blockedDomains": {
+   "default": "",
+   "label": "Blocked domains (comma)",
+   "type": "text",
+   "maxLength": 200
+  },
+  "maxVideoDuration": {
+   "default": 0,
+   "label": "Max video duration (s, 0=\u221e)",
+   "type": "number",
+   "min": 0,
+   "max": 7200,
+   "step": 30
+  },
+  "requireApproval": {
+   "default": false,
+   "label": "Require admin approval",
+   "type": "boolean"
+  },
+  "duplicateProtection": {
+   "default": true,
+   "label": "Duplicate protection",
+   "type": "boolean"
+  }
+ },
+ "roleThemes": {
+  "enabled": {
+   "default": false,
+   "label": "Enable advanced role themes",
+   "type": "boolean"
+  }
+ },
+ "role_member": {
+  "enabled": {
+   "default": true,
+   "label": "Enabled",
+   "type": "boolean"
+  },
+  "backgroundType": {
+   "default": "glass",
+   "label": "Background type",
+   "type": "enum",
+   "options": [
+    "inherit",
+    "transparent",
+    "solid",
+    "gradient",
+    "glass",
+    "image"
+   ]
+  },
+  "background": {
+   "default": "#1a1330",
+   "label": "Background",
+   "type": "color"
+  },
+  "gradientColor": {
+   "default": "#3a1a5e",
+   "label": "Gradient 2nd color",
+   "type": "color"
+  },
+  "backgroundOpacity": {
+   "default": 0.9,
+   "label": "Background opacity",
+   "type": "number",
+   "min": 0,
+   "max": 1,
+   "step": 0.05
+  },
+  "backgroundImage": {
+   "default": "",
+   "label": "Background image URL",
+   "type": "text",
+   "maxLength": 200
+  },
+  "backgroundImageOpacity": {
+   "default": 0.5,
+   "label": "Bg image opacity",
+   "type": "number",
+   "min": 0,
+   "max": 1,
+   "step": 0.05
+  },
+  "backgroundImagePosition": {
+   "default": "center",
+   "label": "Bg image position",
+   "type": "enum",
+   "options": [
+    "center",
+    "top",
+    "bottom",
+    "left",
+    "right"
+   ]
+  },
+  "backgroundImageSize": {
+   "default": "cover",
+   "label": "Bg image size",
+   "type": "enum",
+   "options": [
+    "cover",
+    "contain",
+    "auto"
+   ]
+  },
+  "borderColor": {
+   "default": "#53d986",
+   "label": "Border color",
+   "type": "color"
+  },
+  "borderWidth": {
+   "default": 1,
+   "label": "Border width",
+   "type": "number",
+   "min": 0,
+   "max": 10,
+   "step": 1
+  },
+  "glow": {
+   "default": false,
+   "label": "Glow",
+   "type": "boolean"
+  },
+  "glowColor": {
+   "default": "#53d986",
+   "label": "Glow color",
+   "type": "color"
+  },
+  "glowBlur": {
+   "default": 18,
+   "label": "Glow blur",
+   "type": "number",
+   "min": 0,
+   "max": 60,
+   "step": 1
+  },
+  "textColor": {
+   "default": "#ffffff",
+   "label": "Text color",
+   "type": "color"
+  },
+  "usernameColor": {
+   "default": "#53d986",
+   "label": "Username color",
+   "type": "color"
+  },
+  "badgeText": {
+   "default": "MEMBER",
+   "label": "Badge text",
+   "type": "text",
+   "maxLength": 20
+  },
+  "badgeBackground": {
+   "default": "#1f7a3f",
+   "label": "Badge background",
+   "type": "color"
+  },
+  "badgeColor": {
+   "default": "#ffffff",
+   "label": "Badge text color",
+   "type": "color"
+  },
+  "animation": {
+   "default": "inherit",
+   "label": "Entrance animation",
+   "type": "enum",
+   "options": [
+    "inherit",
+    "none",
+    "fade",
+    "slide",
+    "scale",
+    "pop",
+    "glow",
+    "shine",
+    "pulse"
+   ]
+  },
+  "shine": {
+   "default": true,
+   "label": "Shine ring",
+   "type": "boolean"
+  },
+  "shineColor": {
+   "default": "#6c5ce7",
+   "label": "Shine color",
+   "type": "color"
+  }
+ },
+ "role_prime": {
+  "enabled": {
+   "default": true,
+   "label": "Enabled",
+   "type": "boolean"
+  },
+  "backgroundType": {
+   "default": "gradient",
+   "label": "Background type",
+   "type": "enum",
+   "options": [
+    "inherit",
+    "transparent",
+    "solid",
+    "gradient",
+    "glass",
+    "image"
+   ]
+  },
+  "background": {
+   "default": "#0b2740",
+   "label": "Background",
+   "type": "color"
+  },
+  "gradientColor": {
+   "default": "#0a4a6e",
+   "label": "Gradient 2nd color",
+   "type": "color"
+  },
+  "backgroundOpacity": {
+   "default": 0.9,
+   "label": "Background opacity",
+   "type": "number",
+   "min": 0,
+   "max": 1,
+   "step": 0.05
+  },
+  "backgroundImage": {
+   "default": "",
+   "label": "Background image URL",
+   "type": "text",
+   "maxLength": 200
+  },
+  "backgroundImageOpacity": {
+   "default": 0.5,
+   "label": "Bg image opacity",
+   "type": "number",
+   "min": 0,
+   "max": 1,
+   "step": 0.05
+  },
+  "backgroundImagePosition": {
+   "default": "center",
+   "label": "Bg image position",
+   "type": "enum",
+   "options": [
+    "center",
+    "top",
+    "bottom",
+    "left",
+    "right"
+   ]
+  },
+  "backgroundImageSize": {
+   "default": "cover",
+   "label": "Bg image size",
+   "type": "enum",
+   "options": [
+    "cover",
+    "contain",
+    "auto"
+   ]
+  },
+  "borderColor": {
+   "default": "#41c9ff",
+   "label": "Border color",
+   "type": "color"
+  },
+  "borderWidth": {
+   "default": 1,
+   "label": "Border width",
+   "type": "number",
+   "min": 0,
+   "max": 10,
+   "step": 1
+  },
+  "glow": {
+   "default": true,
+   "label": "Glow",
+   "type": "boolean"
+  },
+  "glowColor": {
+   "default": "#41c9ff",
+   "label": "Glow color",
+   "type": "color"
+  },
+  "glowBlur": {
+   "default": 18,
+   "label": "Glow blur",
+   "type": "number",
+   "min": 0,
+   "max": 60,
+   "step": 1
+  },
+  "textColor": {
+   "default": "#ffffff",
+   "label": "Text color",
+   "type": "color"
+  },
+  "usernameColor": {
+   "default": "#41c9ff",
+   "label": "Username color",
+   "type": "color"
+  },
+  "badgeText": {
+   "default": "PRIME",
+   "label": "Badge text",
+   "type": "text",
+   "maxLength": 20
+  },
+  "badgeBackground": {
+   "default": "#0a6ea1",
+   "label": "Badge background",
+   "type": "color"
+  },
+  "badgeColor": {
+   "default": "#ffffff",
+   "label": "Badge text color",
+   "type": "color"
+  },
+  "animation": {
+   "default": "inherit",
+   "label": "Entrance animation",
+   "type": "enum",
+   "options": [
+    "inherit",
+    "none",
+    "fade",
+    "slide",
+    "scale",
+    "pop",
+    "glow",
+    "shine",
+    "pulse"
+   ]
+  },
+  "shine": {
+   "default": true,
+   "label": "Shine ring",
+   "type": "boolean"
+  },
+  "shineColor": {
+   "default": "#6c5ce7",
+   "label": "Shine color",
+   "type": "color"
+  }
+ },
+ "role_vip": {
+  "enabled": {
+   "default": true,
+   "label": "Enabled",
+   "type": "boolean"
+  },
+  "backgroundType": {
+   "default": "gradient",
+   "label": "Background type",
+   "type": "enum",
+   "options": [
+    "inherit",
+    "transparent",
+    "solid",
+    "gradient",
+    "glass",
+    "image"
+   ]
+  },
+  "background": {
+   "default": "#2a1e00",
+   "label": "Background",
+   "type": "color"
+  },
+  "gradientColor": {
+   "default": "#5e3f00",
+   "label": "Gradient 2nd color",
+   "type": "color"
+  },
+  "backgroundOpacity": {
+   "default": 0.9,
+   "label": "Background opacity",
+   "type": "number",
+   "min": 0,
+   "max": 1,
+   "step": 0.05
+  },
+  "backgroundImage": {
+   "default": "",
+   "label": "Background image URL",
+   "type": "text",
+   "maxLength": 200
+  },
+  "backgroundImageOpacity": {
+   "default": 0.5,
+   "label": "Bg image opacity",
+   "type": "number",
+   "min": 0,
+   "max": 1,
+   "step": 0.05
+  },
+  "backgroundImagePosition": {
+   "default": "center",
+   "label": "Bg image position",
+   "type": "enum",
+   "options": [
+    "center",
+    "top",
+    "bottom",
+    "left",
+    "right"
+   ]
+  },
+  "backgroundImageSize": {
+   "default": "cover",
+   "label": "Bg image size",
+   "type": "enum",
+   "options": [
+    "cover",
+    "contain",
+    "auto"
+   ]
+  },
+  "borderColor": {
+   "default": "#ffd75e",
+   "label": "Border color",
+   "type": "color"
+  },
+  "borderWidth": {
+   "default": 1,
+   "label": "Border width",
+   "type": "number",
+   "min": 0,
+   "max": 10,
+   "step": 1
+  },
+  "glow": {
+   "default": true,
+   "label": "Glow",
+   "type": "boolean"
+  },
+  "glowColor": {
+   "default": "#ffbf55",
+   "label": "Glow color",
+   "type": "color"
+  },
+  "glowBlur": {
+   "default": 18,
+   "label": "Glow blur",
+   "type": "number",
+   "min": 0,
+   "max": 60,
+   "step": 1
+  },
+  "textColor": {
+   "default": "#ffffff",
+   "label": "Text color",
+   "type": "color"
+  },
+  "usernameColor": {
+   "default": "#ffd75e",
+   "label": "Username color",
+   "type": "color"
+  },
+  "badgeText": {
+   "default": "VIP",
+   "label": "Badge text",
+   "type": "text",
+   "maxLength": 20
+  },
+  "badgeBackground": {
+   "default": "#8a5a00",
+   "label": "Badge background",
+   "type": "color"
+  },
+  "badgeColor": {
+   "default": "#ffffff",
+   "label": "Badge text color",
+   "type": "color"
+  },
+  "animation": {
+   "default": "pop",
+   "label": "Entrance animation",
+   "type": "enum",
+   "options": [
+    "inherit",
+    "none",
+    "fade",
+    "slide",
+    "scale",
+    "pop",
+    "glow",
+    "shine",
+    "pulse"
+   ]
+  },
+  "shine": {
+   "default": true,
+   "label": "Shine ring",
+   "type": "boolean"
+  },
+  "shineColor": {
+   "default": "#6c5ce7",
+   "label": "Shine color",
+   "type": "color"
+  }
+ },
+ "role_moderator": {
+  "enabled": {
+   "default": true,
+   "label": "Enabled",
+   "type": "boolean"
+  },
+  "backgroundType": {
+   "default": "inherit",
+   "label": "Background type",
+   "type": "enum",
+   "options": [
+    "inherit",
+    "transparent",
+    "solid",
+    "gradient",
+    "glass",
+    "image"
+   ]
+  },
+  "background": {
+   "default": "#1a1330",
+   "label": "Background",
+   "type": "color"
+  },
+  "gradientColor": {
+   "default": "#3a1a5e",
+   "label": "Gradient 2nd color",
+   "type": "color"
+  },
+  "backgroundOpacity": {
+   "default": 0.9,
+   "label": "Background opacity",
+   "type": "number",
+   "min": 0,
+   "max": 1,
+   "step": 0.05
+  },
+  "backgroundImage": {
+   "default": "",
+   "label": "Background image URL",
+   "type": "text",
+   "maxLength": 200
+  },
+  "backgroundImageOpacity": {
+   "default": 0.5,
+   "label": "Bg image opacity",
+   "type": "number",
+   "min": 0,
+   "max": 1,
+   "step": 0.05
+  },
+  "backgroundImagePosition": {
+   "default": "center",
+   "label": "Bg image position",
+   "type": "enum",
+   "options": [
+    "center",
+    "top",
+    "bottom",
+    "left",
+    "right"
+   ]
+  },
+  "backgroundImageSize": {
+   "default": "cover",
+   "label": "Bg image size",
+   "type": "enum",
+   "options": [
+    "cover",
+    "contain",
+    "auto"
+   ]
+  },
+  "borderColor": {
+   "default": "#7ad7ff",
+   "label": "Border color",
+   "type": "color"
+  },
+  "borderWidth": {
+   "default": 1,
+   "label": "Border width",
+   "type": "number",
+   "min": 0,
+   "max": 10,
+   "step": 1
+  },
+  "glow": {
+   "default": false,
+   "label": "Glow",
+   "type": "boolean"
+  },
+  "glowColor": {
+   "default": "#7ad7ff",
+   "label": "Glow color",
+   "type": "color"
+  },
+  "glowBlur": {
+   "default": 18,
+   "label": "Glow blur",
+   "type": "number",
+   "min": 0,
+   "max": 60,
+   "step": 1
+  },
+  "textColor": {
+   "default": "#ffffff",
+   "label": "Text color",
+   "type": "color"
+  },
+  "usernameColor": {
+   "default": "#7ad7ff",
+   "label": "Username color",
+   "type": "color"
+  },
+  "badgeText": {
+   "default": "MOD",
+   "label": "Badge text",
+   "type": "text",
+   "maxLength": 20
+  },
+  "badgeBackground": {
+   "default": "#155e8a",
+   "label": "Badge background",
+   "type": "color"
+  },
+  "badgeColor": {
+   "default": "#ffffff",
+   "label": "Badge text color",
+   "type": "color"
+  },
+  "animation": {
+   "default": "inherit",
+   "label": "Entrance animation",
+   "type": "enum",
+   "options": [
+    "inherit",
+    "none",
+    "fade",
+    "slide",
+    "scale",
+    "pop",
+    "glow",
+    "shine",
+    "pulse"
+   ]
+  },
+  "shine": {
+   "default": true,
+   "label": "Shine ring",
+   "type": "boolean"
+  },
+  "shineColor": {
+   "default": "#6c5ce7",
+   "label": "Shine color",
+   "type": "color"
+  }
+ },
+ "role_owner": {
+  "enabled": {
+   "default": true,
+   "label": "Enabled",
+   "type": "boolean"
+  },
+  "backgroundType": {
+   "default": "gradient",
+   "label": "Background type",
+   "type": "enum",
+   "options": [
+    "inherit",
+    "transparent",
+    "solid",
+    "gradient",
+    "glass",
+    "image"
+   ]
+  },
+  "background": {
+   "default": "#2a0a24",
+   "label": "Background",
+   "type": "color"
+  },
+  "gradientColor": {
+   "default": "#5e0a4a",
+   "label": "Gradient 2nd color",
+   "type": "color"
+  },
+  "backgroundOpacity": {
+   "default": 0.9,
+   "label": "Background opacity",
+   "type": "number",
+   "min": 0,
+   "max": 1,
+   "step": 0.05
+  },
+  "backgroundImage": {
+   "default": "",
+   "label": "Background image URL",
+   "type": "text",
+   "maxLength": 200
+  },
+  "backgroundImageOpacity": {
+   "default": 0.5,
+   "label": "Bg image opacity",
+   "type": "number",
+   "min": 0,
+   "max": 1,
+   "step": 0.05
+  },
+  "backgroundImagePosition": {
+   "default": "center",
+   "label": "Bg image position",
+   "type": "enum",
+   "options": [
+    "center",
+    "top",
+    "bottom",
+    "left",
+    "right"
+   ]
+  },
+  "backgroundImageSize": {
+   "default": "cover",
+   "label": "Bg image size",
+   "type": "enum",
+   "options": [
+    "cover",
+    "contain",
+    "auto"
+   ]
+  },
+  "borderColor": {
+   "default": "#ff8ad8",
+   "label": "Border color",
+   "type": "color"
+  },
+  "borderWidth": {
+   "default": 1,
+   "label": "Border width",
+   "type": "number",
+   "min": 0,
+   "max": 10,
+   "step": 1
+  },
+  "glow": {
+   "default": true,
+   "label": "Glow",
+   "type": "boolean"
+  },
+  "glowColor": {
+   "default": "#ff8ad8",
+   "label": "Glow color",
+   "type": "color"
+  },
+  "glowBlur": {
+   "default": 18,
+   "label": "Glow blur",
+   "type": "number",
+   "min": 0,
+   "max": 60,
+   "step": 1
+  },
+  "textColor": {
+   "default": "#ffffff",
+   "label": "Text color",
+   "type": "color"
+  },
+  "usernameColor": {
+   "default": "#ff8ad8",
+   "label": "Username color",
+   "type": "color"
+  },
+  "badgeText": {
+   "default": "OWNER",
+   "label": "Badge text",
+   "type": "text",
+   "maxLength": 20
+  },
+  "badgeBackground": {
+   "default": "#8a1f6a",
+   "label": "Badge background",
+   "type": "color"
+  },
+  "badgeColor": {
+   "default": "#ffffff",
+   "label": "Badge text color",
+   "type": "color"
+  },
+  "animation": {
+   "default": "inherit",
+   "label": "Entrance animation",
+   "type": "enum",
+   "options": [
+    "inherit",
+    "none",
+    "fade",
+    "slide",
+    "scale",
+    "pop",
+    "glow",
+    "shine",
+    "pulse"
+   ]
+  },
+  "shine": {
+   "default": true,
+   "label": "Shine ring",
+   "type": "boolean"
+  },
+  "shineColor": {
+   "default": "#6c5ce7",
+   "label": "Shine color",
+   "type": "color"
+  }
+ },
+ "role_superchat": {
+  "enabled": {
+   "default": true,
+   "label": "Enabled",
+   "type": "boolean"
+  },
+  "backgroundType": {
+   "default": "solid",
+   "label": "Background type",
+   "type": "enum",
+   "options": [
+    "inherit",
+    "transparent",
+    "solid",
+    "gradient",
+    "glass",
+    "image"
+   ]
+  },
+  "background": {
+   "default": "#3a2a00",
+   "label": "Background",
+   "type": "color"
+  },
+  "gradientColor": {
+   "default": "#3a1a5e",
+   "label": "Gradient 2nd color",
+   "type": "color"
+  },
+  "backgroundOpacity": {
+   "default": 0.9,
+   "label": "Background opacity",
+   "type": "number",
+   "min": 0,
+   "max": 1,
+   "step": 0.05
+  },
+  "backgroundImage": {
+   "default": "",
+   "label": "Background image URL",
+   "type": "text",
+   "maxLength": 200
+  },
+  "backgroundImageOpacity": {
+   "default": 0.5,
+   "label": "Bg image opacity",
+   "type": "number",
+   "min": 0,
+   "max": 1,
+   "step": 0.05
+  },
+  "backgroundImagePosition": {
+   "default": "center",
+   "label": "Bg image position",
+   "type": "enum",
+   "options": [
+    "center",
+    "top",
+    "bottom",
+    "left",
+    "right"
+   ]
+  },
+  "backgroundImageSize": {
+   "default": "cover",
+   "label": "Bg image size",
+   "type": "enum",
+   "options": [
+    "cover",
+    "contain",
+    "auto"
+   ]
+  },
+  "borderColor": {
+   "default": "#ffbf55",
+   "label": "Border color",
+   "type": "color"
+  },
+  "borderWidth": {
+   "default": 1,
+   "label": "Border width",
+   "type": "number",
+   "min": 0,
+   "max": 10,
+   "step": 1
+  },
+  "glow": {
+   "default": true,
+   "label": "Glow",
+   "type": "boolean"
+  },
+  "glowColor": {
+   "default": "#ffbf55",
+   "label": "Glow color",
+   "type": "color"
+  },
+  "glowBlur": {
+   "default": 18,
+   "label": "Glow blur",
+   "type": "number",
+   "min": 0,
+   "max": 60,
+   "step": 1
+  },
+  "textColor": {
+   "default": "#ffffff",
+   "label": "Text color",
+   "type": "color"
+  },
+  "usernameColor": {
+   "default": "#ffd75e",
+   "label": "Username color",
+   "type": "color"
+  },
+  "badgeText": {
+   "default": "",
+   "label": "Badge text",
+   "type": "text",
+   "maxLength": 20
+  },
+  "badgeBackground": {
+   "default": "#8a5a00",
+   "label": "Badge background",
+   "type": "color"
+  },
+  "badgeColor": {
+   "default": "#ffffff",
+   "label": "Badge text color",
+   "type": "color"
+  },
+  "animation": {
+   "default": "pop",
+   "label": "Entrance animation",
+   "type": "enum",
+   "options": [
+    "inherit",
+    "none",
+    "fade",
+    "slide",
+    "scale",
+    "pop",
+    "glow",
+    "shine",
+    "pulse"
+   ]
+  },
+  "shine": {
+   "default": true,
+   "label": "Shine ring",
+   "type": "boolean"
+  },
+  "shineColor": {
+   "default": "#6c5ce7",
+   "label": "Shine color",
+   "type": "color"
+  }
+ },
+ "eventRules": {
+  "enabled": {
+   "default": true,
+   "label": "Enable event rules",
+   "type": "boolean"
+  },
+  "autoOpenMedia": {
+   "default": false,
+   "label": "Auto-open media (interactive only)",
+   "type": "boolean"
+  },
+  "highlightSuperChat": {
+   "default": true,
+   "label": "Highlight Super Chat",
+   "type": "boolean"
+  },
+  "superChatThreshold": {
+   "default": 100,
+   "label": "Super Chat highlight \u2265",
+   "type": "number",
+   "min": 0,
+   "max": 100000,
+   "step": 10
+  },
+  "memberAutoTheme": {
+   "default": true,
+   "label": "Auto-apply role themes",
+   "type": "boolean"
+  }
+ }
+}

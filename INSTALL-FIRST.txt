@@ -1,0 +1,109 @@
+Premium OBS Chat Overlay - live overlay fix (v4)
+===============================================
+
+WHY THE PREVIEW WORKED BUT THE LIVE OVERLAY DID NOT
+---------------------------------------------------
+Your uploads were correct. I checked your server directly and all six asset
+files are the new versions.
+
+The problem is that view.php requested its files WITHOUT a version marker:
+
+    assets/renderer.css
+    assets/live.js
+
+OBS and intermediate caches keep those URLs for a long time, so the live
+overlay kept running the OLD cached CSS and the OLD cached renderer, while the
+editor preview worked because you had hard-refreshed it in Chrome.
+
+Proof from a fresh browser on your live URL: the dot was animating (10 running
+animations) but the notice was still measured at left:16 / top:500, which is
+the OLD stylesheet position. New JS, stale CSS - a cache split.
+
+"Refresh cache of current page" in OBS does not reliably clear this, which is
+why the earlier instruction did not help you.
+
+THE FIX
+-------
+view.php and overlay.php now append each file's modification time to every
+asset URL, for example:
+
+    assets/renderer.css?v=1789020799
+
+Every future upload changes the number automatically, so OBS is forced to
+fetch fresh files. You will not have to fight the cache again.
+
+live.js and preview.js also no longer hardcode the renderer version; they read
+it from the page, so the renderer can never be served stale either.
+
+Also included: the travelling dot fix and the notice moved to the top-right.
+
+INSTALL (cPanel File Manager)
+-----------------------------
+1. Back up these, in the folder that serves https://varshneyji.com/obs/ :
+       view.php
+       overlay.php
+       assets/          (whole folder)
+
+2. Upload the 6 files from  assets/  into        public_html/obs/assets/
+   Upload the 2 files from  php/     into        public_html/obs/
+   (view.php and overlay.php go in the obs folder itself, NOT in assets)
+
+3. Do not change .env, the database, or any other PHP file.
+
+AFTER UPLOADING
+---------------
+OBS: right-click the Browser Source -> Refresh. That is enough now, because the
+     URLs themselves change.
+Editor: open Manage -> Customise the look normally.
+
+Suggested shine settings:
+   Dot size 5 | Dots (count) 1 | Speed 6 | Trail length 10 | Glow ON
+   Performance -> Reduced motion OFF
+
+To hide the offline notice during a stream:
+   Customise the look -> OBS -> Hide status = ON
+
+VERIFY THE UPLOAD WORKED
+------------------------
+Open your overlay URL in Chrome, then View Source. The stylesheet line must
+now contain a "?v=" number, like:
+
+    <link rel="stylesheet" href="https://varshneyji.com/obs/assets/renderer.css?v=1789020799">
+
+If there is no "?v=" number, view.php did not get replaced.
+
+TESTS RUN
+---------
+32 automated browser checks passed:
+
+  Live path (11) - view.php page structure with live.js and a mocked chat.php:
+      messages render, ring drawn, dot visible, dot animating, offline notice
+      shown, notice on the right, notice at the top, notice covers no message,
+      chat polled repeatedly, dot keeps advancing across 6 polls, no JS errors.
+
+  Shine and editor (21) - dot visible and animating even while the OLD broken
+      stylesheet is served on purpose, dot reaches all four edges, completes the
+      circuit, survives repeated settings applies, reduced motion behaves,
+      multi-dot works, editor preview receives saved settings after a slow
+      schema load and updates instantly, no JS errors.
+
+  view.php and overlay.php pass PHP 8.2 syntax checks, and the versioned URL
+  output was verified by executing the template code.
+
+NOT TESTED
+----------
+Your Mac's OBS Browser Source itself, and your real YouTube live chat while
+actually streaming. Nothing was written to your server or database by me.
+
+ROLLBACK
+--------
+ROLLBACK-originals/ holds the exact files currently on your server. Copy them
+back to undo everything.
+
+NOTE ON THE CURRENT CHAT STATE
+------------------------------
+When I checked your live URL, the status read:
+   "No live chat found for this video. Make sure the stream is live..."
+That is the diagnostic message, meaning YouTube reported no active live chat at
+that moment. Once you are actually live, messages flow. Set the correct video
+or use the channel option in Manage.

@@ -1,0 +1,51 @@
+/* Live Camera Studio — OBS output + viewer stage */
+:root { --cam-radius: 10px; }
+html,body { margin:0; padding:0; height:100%; background:transparent; }
+body.cam-output { background:#000; }
+.cam-stage {
+  position:relative; width:100vw; height:100vh; overflow:hidden;
+  background:#0b0d12; color:#e7ecf5;
+  font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+}
+.cam-el {
+  position:absolute; overflow:hidden; box-sizing:border-box;
+  border-radius:var(--cam-radius); background:#11141c;
+  box-shadow:0 6px 24px rgba(0,0,0,.35);
+}
+.cam-el.type-camera { background:#05070c; }
+.cam-el video { width:100%; height:100%; object-fit:cover; display:block; background:#05070c; }
+.cam-el .cam-ph {
+  position:absolute; inset:0; display:flex; flex-direction:column; gap:6px;
+  align-items:center; justify-content:center; text-align:center;
+  color:#9fb0c8; padding:10px;
+}
+.cam-el .cam-ph .dot { width:10px;height:10px;border-radius:50%;background:#f2585b; }
+.cam-el .cam-ph .dot.online { background:#2ecc71; }
+.cam-el .cam-ph .dot.streaming { background:#2ecc71; box-shadow:0 0 0 0 rgba(46,204,113,.6); animation:campulse 1.6s infinite; }
+@keyframes campulse { 0%{box-shadow:0 0 0 0 rgba(46,204,113,.55)} 70%{box-shadow:0 0 0 12px rgba(46,204,113,0)} 100%{box-shadow:0 0 0 0 rgba(46,204,113,0)} }
+.cam-el .cam-name { font-size:14px; font-weight:600; }
+.cam-el .cam-sub  { font-size:12px; opacity:.7; }
+.cam-el.type-text {
+  display:flex; align-items:center; justify-content:center;
+  background:rgba(8,10,16,.55); font-weight:700; font-size:28px;
+}
+.cam-el.type-image { background-size:cover; background-position:center; }
+.cam-el.type-overlay { background:transparent; box-shadow:none; }
+.cam-el .cam-blur {
+  position:absolute; backdrop-filter:blur(14px); background:rgba(10,12,18,.25);
+  border:1px dashed rgba(255,255,255,.25); border-radius:8px; pointer-events:none;
+}
+/* Viewer chrome (live.php only) */
+body.cam-viewer { background:#05060a; }
+.cam-viewer-bar {
+  position:fixed; left:0; right:0; top:0; z-index:10; display:flex; gap:10px;
+  align-items:center; padding:10px 16px; color:#e7ecf5;
+  background:linear-gradient(180deg,rgba(0,0,0,.65),rgba(0,0,0,0));
+  font-family:Inter,system-ui,sans-serif;
+}
+.cam-viewer-bar .live { background:#f2585b; color:#fff; font-weight:700; font-size:12px;
+  padding:3px 8px; border-radius:6px; letter-spacing:.5px; }
+.cam-offline {
+  position:fixed; inset:0; display:flex; align-items:center; justify-content:center;
+  color:#8494ad; font-family:Inter,system-ui,sans-serif; font-size:18px;
+}

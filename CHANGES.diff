@@ -1,0 +1,189 @@
+--- before/assets/editor.js
++++ after/assets/editor.js
+@@ -1,5 +1,5 @@
+ const O = window.OVERLAY;
+-const schema = await (await fetch(O.schemaUrl)).json();
++const schema = await (await fetch(O.schemaUrl,{cache:'no-cache'})).json();
+ const defaults = Object.fromEntries(Object.entries(schema).map(([g,fs])=>[g,Object.fromEntries(Object.entries(fs).map(([k,f])=>[k,f.default]))]));
+ 
+ // merge saved settings over defaults so new fields never break older configs
+@@ -8,8 +8,12 @@
+ 
+ const preview = document.getElementById('preview');
+ let ready = false;
+-window.addEventListener('message', e => { if (e.data?.type === 'preview-ready') { ready = true; push(); } });
+-function push(){ if(ready) preview.contentWindow.postMessage({type:'settings',settings},'*'); }
++window.addEventListener('message', e => { if (e.source === preview.contentWindow && e.origin === location.origin && e.data?.type === 'preview-ready') { ready = true; push(); } });
++function push(){ if(ready) preview.contentWindow.postMessage({type:'settings',settings},location.origin); }
++// Reload only once after the listener exists; ask again on load to avoid a lost ready event.
++preview.addEventListener('load',()=>{ready=false;preview.contentWindow.postMessage({type:'preview-init'},location.origin);});
++const previewUrl=new URL(preview.src,location.href);previewUrl.searchParams.set('v','shine-circle-v2');preview.src=previewUrl.href;
++preview.contentWindow.postMessage({type:'preview-init'},location.origin);
+ 
+ const label = k => k.replace(/([A-Z])/g,' $1').replace(/^./,c=>c.toUpperCase());
+ const controls = document.getElementById('controls');
+@@ -56,7 +60,7 @@
+ 
+ document.getElementById('btnSample').onclick = () => {
+   const kinds = ['Normal','Owner','Moderator','Member','Super Chat','Hindi','Emoji','Long Message'];
+-  preview.contentWindow.postMessage({type:'sample',kind:kinds[Math.floor(Math.random()*kinds.length)]},'*');
++  preview.contentWindow.postMessage({type:'sample',kind:kinds[Math.floor(Math.random()*kinds.length)]},location.origin);
+ };
+ 
+ const btnSave = document.getElementById('btnSave');
+--- before/assets/live.js
++++ after/assets/live.js
+@@ -1,4 +1,4 @@
+-import {Renderer, sample} from './renderer.js';
++import {Renderer, sample} from './renderer.js?v=shine-circle-v2';
+ const c = document.getElementById('overlay-config');
+ const status = document.getElementById('status');
+ const renderer = new Renderer(document.getElementById('chat'), JSON.parse(c.dataset.settings));
+@@ -23,7 +23,7 @@
+     try {
+       const r = await fetch(`${endpoint}?t=${encodeURIComponent(token)}&since=${cursor}`, {cache:'no-store'});
+       const j = await r.json();
+-      if (j.settings) { const sig = JSON.stringify(j.settings); if (sig !== settingsSig) { settingsSig = sig; renderer.apply(j.settings); } }
++      if (j.settings) { const sig = JSON.stringify(j.settings); if (sig !== settingsSig) { settingsSig = sig; renderer.apply(j.settings); fit(); } }
+       if (j.mode === 'demo') { startDemo(); return; }
+       stopDemo();
+       if (typeof j.cursor === 'number') cursor = j.cursor;
+--- before/assets/preview.html
++++ after/assets/preview.html
+@@ -1,7 +1,7 @@
+ <!doctype html><html lang="en"><head><meta charset="utf-8">
+ <meta name="viewport" content="width=device-width,initial-scale=1">
+ <title>Overlay preview</title>
+-<link rel="stylesheet" href="renderer.css">
++<link rel="stylesheet" href="renderer.css?v=shine-circle-v2">
+ <style>html,body{background:#171322}</style>
+ </head><body><div id="chat"></div>
+-<script type="module" src="preview.js"></script></body></html>
++<script type="module" src="preview.js?v=shine-circle-v2"></script></body></html>
+--- before/assets/preview.js
++++ after/assets/preview.js
+@@ -1,17 +1,24 @@
+-import {Renderer,sample} from './renderer.js';
+-const schema=await(await fetch('./settings.schema.json')).json();
++import {Renderer,sample} from './renderer.js?v=shine-circle-v2';
++const schema=await(await fetch('./settings.schema.json?v=shine-circle-v2',{cache:'no-cache'})).json();
+ const defaults=Object.fromEntries(Object.entries(schema).map(([g,fs])=>[g,Object.fromEntries(Object.entries(fs).map(([k,f])=>[k,f.default]))]));
+ let settings=structuredClone(defaults);
+ const renderer=new Renderer(document.getElementById('chat'),settings);
+-function fit(){const scale=Math.min(1,innerWidth/settings.general.width);renderer.root.style.transform=`scale(${scale*settings.general.scale})`;renderer.root.style.height=Math.min(settings.general.height,innerHeight/scale)+'px';}
+-fit();
+-for(const kind of ['Normal','Owner','Member','Super Chat'])renderer.add(sample(kind));
++const notice=document.createElement('div');notice.style.cssText='position:absolute;top:12px;left:12px;right:12px;color:#bdb7ca;font:12px/1.5 system-ui;pointer-events:none';document.body.append(notice);
++function fit(){const scale=Math.min(1,innerWidth/settings.general.width)*settings.general.scale;
++ renderer.root.style.transform=`scale(${scale})`;renderer.root.style.height=Math.min(settings.general.height,innerHeight/Math.max(.01,scale))+'px';
++ notice.textContent='Sample preview — not your live chat'+(!settings.shine.enabled?' · Shine is OFF':renderer.motionReduced()?' · Reduced motion is ON: dot is stationary':'');
++}
++function seed(){for(const kind of ['Normal','Owner','Member','Super Chat']){const m=sample(kind);renderer.render(m,Date.now(),false);}for(const item of renderer.items)item.life=0;}
++// Samples stay present while editing, even if live messages have a short lifetime.
++fit();seed();
+ window.addEventListener('message',e=>{
++ if(e.source!==parent||e.origin!==location.origin)return;
+  const m=e.data;
+- if(m?.type==='settings'){settings=m.settings;renderer.apply(settings);fit();}
+- if(m?.type==='sample')renderer.add(sample(m.kind));
++ if(m?.type==='preview-init'){parent.postMessage({type:'preview-ready'},location.origin);return;}
++ if(m?.type==='settings'&&m.settings){settings=structuredClone(defaults);for(const g of Object.keys(defaults))if(m.settings[g])Object.assign(settings[g],m.settings[g]);renderer.apply(settings);if(!renderer.items.length)seed();for(const item of renderer.items)item.life=0;fit();}
++ if(m?.type==='sample'){renderer.add(sample(m.kind));for(const item of renderer.items)item.life=0;}
+  if(m?.type==='clear')renderer.clear();
+ });
+ window.addEventListener('resize',fit);
+ window.addEventListener('pagehide',()=>renderer.destroy());
+-parent.postMessage({type:'preview-ready'},'*');
++parent.postMessage({type:'preview-ready'},location.origin);
+--- before/assets/renderer.css
++++ after/assets/renderer.css
+@@ -1 +1 @@
+-*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;background:transparent;overflow:hidden}#chat{position:absolute;display:flex;flex-direction:column;overflow:visible;font-family:system-ui,sans-serif}#chat .msg{position:relative;flex-shrink:0;display:flex;align-items:flex-start;min-width:0;background:transparent;isolation:isolate}#chat .body{flex:1;min-width:0}#chat .meta{display:flex;align-items:center;flex-wrap:wrap;line-height:1.2}#chat .avatar{object-fit:cover;flex-shrink:0;background:#393440;display:block}#chat .name{display:inline-block}#chat .text{margin-top:4px;min-width:0}#chat .tag{font-weight:700;border-radius:4px;padding:2px 5px;line-height:1.2}#chat .tag.owner{background:#e0a03c;color:#171008}#chat .tag.mod{background:#496bc2;color:white}#chat .tag.member{background:#167b34;color:white}#chat .sc-amt{font-weight:700}#chat .ring{position:absolute;inset:0;overflow:visible;pointer-events:none;z-index:2;max-width:none}#chat .ring path{fill:none;stroke-linecap:round;animation:obs-dash var(--speed) var(--easing) infinite;animation-direction:var(--direction)}@keyframes obs-dash{from{stroke-dashoffset:var(--o0)}to{stroke-dashoffset:calc(var(--o0) - var(--per))}}#status{position:absolute;left:16px;bottom:16px;max-width:390px;padding:10px 14px;background:#171322;color:#f1edf8;border-radius:8px;font:14px/1.5 system-ui,sans-serif}#status:empty{display:none}@keyframes obs-fade{from{opacity:0}to{opacity:1}}@keyframes obs-slide-up{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}@keyframes obs-slide-left{from{opacity:0;transform:translateX(-18px)}to{opacity:1;transform:none}}@keyframes obs-slide-right{from{opacity:0;transform:translateX(18px)}to{opacity:1;transform:none}}@keyframes obs-scale{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:none}}@keyframes obs-pop{from{opacity:0;transform:translateY(10px) scale(.97)}to{opacity:1;transform:none}}@keyframes obs-blur{from{opacity:0;filter:blur(5px)}to{opacity:1;filter:none}}@media(prefers-reduced-motion:reduce){#chat .msg,#chat .ring path{animation:none!important}}
++*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;background:transparent;overflow:hidden}#chat{position:absolute;display:flex;flex-direction:column;overflow:visible;font-family:system-ui,sans-serif}#chat .msg{position:relative;flex-shrink:0;display:flex;align-items:flex-start;min-width:0;background:transparent;isolation:isolate}#chat .body{flex:1;min-width:0}#chat .meta{display:flex;align-items:center;flex-wrap:wrap;line-height:1.2}#chat .avatar{object-fit:cover;flex-shrink:0;background:#393440;display:block}#chat .name{display:inline-block}#chat .text{margin-top:4px;min-width:0}#chat .tag{font-weight:700;border-radius:4px;padding:2px 5px;line-height:1.2}#chat .tag.owner{background:#e0a03c;color:#171008}#chat .tag.mod{background:#496bc2;color:white}#chat .tag.member{background:#167b34;color:white}#chat .sc-amt{font-weight:700}#chat .ring{position:absolute;inset:0;overflow:visible;pointer-events:none;z-index:2;max-width:none}#chat .ring path{fill:none;stroke:none;animation:none}#chat .ring circle{pointer-events:none}#status{position:absolute;left:16px;bottom:16px;max-width:390px;padding:10px 14px;background:#171322;color:#f1edf8;border-radius:8px;font:14px/1.5 system-ui,sans-serif}#status:empty{display:none}@keyframes obs-fade{from{opacity:0}to{opacity:1}}@keyframes obs-slide-up{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}@keyframes obs-slide-left{from{opacity:0;transform:translateX(-18px)}to{opacity:1;transform:none}}@keyframes obs-slide-right{from{opacity:0;transform:translateX(18px)}to{opacity:1;transform:none}}@keyframes obs-scale{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:none}}@keyframes obs-pop{from{opacity:0;transform:translateY(10px) scale(.97)}to{opacity:1;transform:none}}@keyframes obs-blur{from{opacity:0;filter:blur(5px)}to{opacity:1;filter:none}}@media(prefers-reduced-motion:reduce){#chat .msg,#chat .ring path{animation:none!important}}
+--- before/assets/renderer.js
++++ after/assets/renderer.js
+@@ -1,3 +1,4 @@
++// Build: shine-circle-v2. Shared by OBS and the editor preview.
+ const NS='http://www.w3.org/2000/svg';
+ const palette=['#ff7d7d','#ffbf55','#7ad7ff','#8de969','#ff8ad8','#c9a0ff','#ffd75e','#66e6c3'];
+ export const stableColor=n=>{let h=0;for(const c of String(n))h=(h*31+c.codePointAt(0))>>>0;return palette[h%palette.length];};
+@@ -5,8 +6,8 @@
+ const node=(tag,cls,text)=>{const el=document.createElement(tag);el.className=cls;if(text!==undefined)el.textContent=String(text);return el;};
+ const safeImage=v=>{try{const u=new URL(v);return u.protocol==='https:'&&['yt3.ggpht.com','yt3.googleusercontent.com'].includes(u.hostname)&&!u.username&&!u.password?u.href:'';}catch{return '';}};
+ export class Renderer {
+- constructor(root,settings){this.root=root;this.items=[];this.seen=new Map();this.duplicates=new Map();this.spam=new Map();this.exiting=new Set();this.settings=settings;this.tick=setInterval(()=>this.expire(),500);this.apply(settings);}
+- apply(s){this.settings=structuredClone(s);const {general:g,layout:l}=s;
++ constructor(root,settings){this.root=root;this.items=[];this.seen=new Map();this.duplicates=new Map();this.spam=new Map();this.exiting=new Set();this.settings=settings;this.motionEpoch=performance.now();this.raf=null;this.destroyed=false;this.motionQuery=matchMedia("(prefers-reduced-motion: reduce)");this.tick=setInterval(()=>this.expire(),500);this.apply(settings);this.onMotionChange=()=>{for(const item of this.items)if(item.ring)this.paintRing(item.ring,performance.now());this.startMotion();};this.motionQuery.addEventListener?.("change",this.onMotionChange);}
++ apply(s){const signature=JSON.stringify(s);if(signature===this.signature)return;this.signature=signature;this.settings=structuredClone(s);const {general:g,layout:l}=s;
+   Object.assign(this.root.style,{width:g.width+'px',height:g.height+'px',opacity:g.opacity,transform:`scale(${g.scale})`,transformOrigin:`${l.horizontal} ${l.alignment}`,left:l.horizontal==='left'?'0':'auto',right:l.horizontal==='right'?'0':'auto',top:l.alignment==='top'?'0':'auto',bottom:l.alignment==='bottom'?'0':'auto',gap:l.gap+'px',padding:`${Math.max(l.paddingY,s.canvas.safeArea)}px ${Math.max(l.paddingX,s.canvas.safeArea)}px`,justifyContent:l.alignment==='top'?'flex-start':'flex-end',flexDirection:'column',fontFamily:s.typography.font});
+   const old=this.items.map(x=>({data:x.data,created:x.created}));this.clear();for(const x of old)this.render(x.data,x.created,false);while(this.items.length>s.general.maxMessages)this.remove(this.items[0],false);
+  }
+@@ -45,25 +46,45 @@
+   if(animate&&s.animation.entrance!=='off'&&!s.performance.reducedMotion)el.style.animation=`obs-${s.animation.entrance} ${s.animation.duration}ms ${s.animation.easing} ${s.animation.delay}ms both`;
+   s.behavior.newestAtTop?this.root.prepend(el):this.root.append(el);
+   const life=paid?s.superChat.highlightDuration:sticker?s.superSticker.highlightDuration:s.behavior.lifetime;
+-  const item={el,data:m,created,life,observer:null};this.items.push(item);
+-  if(s.shine.enabled){const col=paid&&s.superChat.specialShine?s.superChat.borderColor:s.shine.color;item.observer=new ResizeObserver(()=>this.ring(el,corners,col));item.observer.observe(el);requestAnimationFrame(()=>this.ring(el,corners,col));}
++  const item={el,data:m,created,life,observer:null,ring:null};this.items.push(item);
++  if(s.shine.enabled){const col=paid&&s.superChat.specialShine?s.superChat.borderColor:s.shine.color;item.observer=new ResizeObserver(()=>this.ring(item,corners,col));item.observer.observe(el);this.ring(item,corners,col);}
+  }
+- ring(el,corners,color){if(!el.isConnected)return;el.querySelector('.ring')?.remove();const s=this.settings,w=el.offsetWidth,h=el.offsetHeight,sw=s.shine.thickness/2;
+-  if(w<2||h<2)return;const [tl,tr,br,bl]=corners.map(r=>Math.max(0,Math.min(r,Math.min(w,h)/2-sw))),x=sw,y=sw,r=w-sw,b=h-sw;
++ ring(item,corners,color){const el=item.el;if(!el.isConnected)return;
++  const s=this.settings,w=el.offsetWidth,h=el.offsetHeight;
++  // ResizeObserver may notify more than once. Never restart motion on unchanged geometry.
++  if(item.ring&&item.ring.w===w&&item.ring.h===h)return;
++  el.querySelector('.ring')?.remove();item.ring=null;if(w<2||h<2)return;
++  const inset=Math.max(.5,s.border.enabled?s.border.width/2:.5),x=inset,y=inset,r=w-inset,b=h-inset;
++  const [tl,tr,br,bl]=corners.map(v=>Math.max(0,Math.min(v,Math.min(w,h)/2-inset)));
+   const d=`M ${x+tl} ${y} H ${r-tr} Q ${r} ${y} ${r} ${y+tr} V ${b-br} Q ${r} ${b} ${r-br} ${b} H ${x+bl} Q ${x} ${b} ${x} ${b-bl} V ${y+tl} Q ${x} ${y} ${x+tl} ${y} Z`;
+-  const svg=document.createElementNS(NS,'svg');svg.setAttribute('class','ring');svg.setAttribute('width',w);svg.setAttribute('height',h);svg.setAttribute('viewBox',`0 0 ${w} ${h}`);el.append(svg);
+-  const measure=document.createElementNS(NS,'path');measure.setAttribute('d',d);svg.append(measure);const per=measure.getTotalLength();measure.remove();
+-  const dot=0.01,headWidth=s.shine.dotSize,base=-per*s.shine.startPosition/100;
+-  const count=Math.max(1,Math.round(s.shine.count||1));
+-  const layer=(len,opacity,thick,blur=0,phase=0)=>{const p=document.createElementNS(NS,'path');p.setAttribute('d',d);p.setAttribute('stroke',color);p.setAttribute('stroke-opacity',Math.min(1,opacity*s.shine.opacity));p.setAttribute('stroke-width',thick);p.setAttribute('stroke-dasharray',`${len} ${Math.max(1,per-len)}`);p.style.setProperty('--o0',(base+len-dot-phase*per/count)+'px');if(blur)p.style.filter=`blur(${blur}px)`;if(s.performance.reducedMotion)p.style.animation='none';svg.append(p);};
+-  svg.style.setProperty('--per',per+'px');svg.style.setProperty('--speed',s.shine.speed+'s');svg.style.setProperty('--easing',s.shine.easing);svg.style.setProperty('--direction',s.shine.direction==='clockwise'?'normal':'reverse');
++  const svg=document.createElementNS(NS,'svg');svg.setAttribute('class','ring');svg.setAttribute('aria-hidden','true');svg.setAttribute('width',w);svg.setAttribute('height',h);svg.setAttribute('viewBox',`0 0 ${w} ${h}`);
++  // The parent CSS border occupies space; align the SVG to its outer border box.
++  svg.style.left=-el.clientLeft+'px';svg.style.top=-el.clientTop+'px';el.append(svg);
++  const path=document.createElementNS(NS,'path');path.setAttribute('d',d);path.style.cssText='fill:none;stroke:none;animation:none';svg.append(path);
++  const per=path.getTotalLength(),dots=[],count=Math.max(1,Math.min(4,Math.round(s.shine.count||1))),diameter=Math.max(1,Number(s.shine.dotSize)||3);
++  const circle=(radius,opacity,blur,phase,distance,head=false)=>{const c=document.createElementNS(NS,'circle');c.setAttribute('r',radius);c.setAttribute('fill',color);c.setAttribute('opacity',Math.max(0,Math.min(1,opacity*s.shine.opacity)));if(head)c.setAttribute('class','shine-head');if(blur)c.style.filter=`blur(${blur}px)`;svg.append(c);dots.push({el:c,phase,distance});};
+   for(let k=0;k<count;k++){
+-   if(s.shine.trailLength>0)for(let i=s.shine.layers;i>=1;i--)layer(dot+s.shine.trailLength*i/s.shine.layers,.28*(1-i/(s.shine.layers+1)),s.shine.thickness,0,k);
+-   if(s.glow.enabled&&!s.performance.disableGlow)layer(dot,s.glow.opacity,headWidth*2,s.glow.blur,k);
+-   layer(dot,1,headWidth,0,k);
++   const phase=k/count;
++   if(s.shine.trailLength>0){const n=Math.max(1,Math.min(12,s.shine.layers));for(let i=n;i>=1;i--)circle(Math.max(.4,s.shine.thickness/2)*(1-i/(n+1)*.5),.32*(1-i/(n+1)),0,phase,s.shine.trailLength*i/n);}
++   if(s.glow.enabled&&!s.performance.disableGlow)circle(diameter*.85,s.glow.opacity,Math.min(20,s.glow.blur),phase,0);
++   circle(diameter/2,1,0,phase,0,true);
+   }
++  item.ring={svg,path,per,dots,w,h};this.paintRing(item.ring,performance.now());this.startMotion();
+  }
+- remove(item,animate){const index=this.items.indexOf(item);if(index>=0)this.items.splice(index,1);item.observer?.disconnect();
++ motionReduced(){return this.settings.performance.reducedMotion||this.motionQuery.matches;}
++ ease(t){const type=this.settings.shine.easing;if(type==='ease-in')return t*t;if(type==='ease-out')return 1-(1-t)*(1-t);if(type==='ease-in-out'||type==='ease')return t*t*(3-2*t);return t;}
++ paintRing(ring,now){const s=this.settings.shine,dir=s.direction==='clockwise'?1:-1;
++  const t=this.motionReduced()?0:((now-this.motionEpoch)/(Math.max(1,Number(s.speed)||12)*1000))%1;
++  const progress=Number(s.startPosition)/100+dir*this.ease(t);
++  for(const dot of ring.dots){let len=((progress+dot.phase)*ring.per-dir*dot.distance)%ring.per;if(len<0)len+=ring.per;const p=ring.path.getPointAtLength(len);dot.el.setAttribute('cx',p.x.toFixed(3));dot.el.setAttribute('cy',p.y.toFixed(3));}
++ }
++ startMotion(){if(this.raf!==null||this.destroyed)return;
++  const step=now=>{this.raf=null;if(this.destroyed)return;let active=false;
++   for(const item of this.items)if(item.ring&&item.el.isConnected){active=true;this.paintRing(item.ring,now);}
++   if(active&&!this.motionReduced())this.raf=requestAnimationFrame(step);
++  };this.raf=requestAnimationFrame(step);
++ }
++ remove(item,animate){const index=this.items.indexOf(item);if(index>=0)this.items.splice(index,1);item.observer?.disconnect();item.ring=null;if(!this.items.length&&this.raf!==null){cancelAnimationFrame(this.raf);this.raf=null;}
+   const s=this.settings;if(!animate||s.animation.exit==='off'||s.performance.reducedMotion||s.behavior.overflow==='remove'||this.exiting.size>=3){item.el.remove();return;}
+   const kind=s.animation.exit;const frames=kind==='shrink'||s.behavior.overflow==='shrink'?[{opacity:1,transform:'scale(1)'},{opacity:0,transform:'scale(.8)'}]:kind==='slide'?[{opacity:1,transform:'translateX(0)'},{opacity:0,transform:'translateX(-20px)'}]:kind==='blur'?[{opacity:1,filter:'blur(0)'},{opacity:0,filter:'blur(5px)'}]:[{opacity:1},{opacity:0}];
+   this.exiting.add(item.el);const anim=item.el.animate(frames,{duration:s.animation.duration,easing:s.animation.easing});anim.finished.catch(()=>{}).finally(()=>{item.el.remove();this.exiting.delete(item.el);});
+@@ -71,7 +92,7 @@
+  expire(){const now=Date.now();for(const item of [...this.items])if(item.life>0&&now-item.created>=item.life*1000)this.remove(item,true);}
+  event(e){if(e.type==='chat_message')this.add(e.data);if(e.type==='message_deleted')for(const x of [...this.items])if(x.data.id===e.data.id)this.remove(x,false);if(e.type==='user_banned')for(const x of [...this.items])if(x.data.authorId===e.data.authorId)this.remove(x,false);}
+  clear(){for(const x of [...this.items])this.remove(x,false);for(const el of this.exiting){el.getAnimations().forEach(a=>a.cancel());el.remove();}this.exiting.clear();}
+- destroy(){clearInterval(this.tick);this.clear();this.seen.clear();this.duplicates.clear();this.spam.clear();}
++ destroy(){this.motionQuery.removeEventListener?.("change",this.onMotionChange);this.destroyed=true;if(this.raf!==null)cancelAnimationFrame(this.raf);this.raf=null;clearInterval(this.tick);this.clear();this.seen.clear();this.duplicates.clear();this.spam.clear();}
+ }
+ export function sample(kind='Normal') {const m={id:crypto.randomUUID(),authorId:crypto.randomUUID(),author:'Aarav',message:'This little glow looks so clean ✨',timestamp:new Date().toISOString()};
+  const changes={Moderator:{author:'Meera',moderator:true,message:'Welcome everyone! Keep the chat friendly.'},Owner:{author:'Varshney Ji',owner:true,message:'We are live! नमस्ते दोस्तों 🙌'},Member:{author:'Riya',member:true,message:'Happy to be part of this community 💜'},'Super Chat':{author:'Kabir',message:'Love the stream!',superChat:{amount:'₹200',amountMicros:200000000,currency:'INR'}},'Super Sticker':{author:'Anaya',message:'Cheering you on 🎉',superSticker:{amount:'₹99',amountMicros:99000000,currency:'INR',altText:'Celebration sticker'}},'Long Message':{message:'A longer message wraps comfortably inside the transparent card. Your stream stays visible behind every message, and the little dot follows all four rounded corners without splitting.'},Emoji:{message:'🔥 🎮 ✨ 💜 🙌 🚀'},Hindi:{author:'अर्जुन',message:'नमस्ते दोस्तों! आज की लाइव स्ट्रीम बहुत अच्छी है 💜'},'Spam Test':{author:'Spam test',authorId:'spam-test',message:'https://example.com repeated test message'}};
